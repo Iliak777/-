@@ -25,6 +25,13 @@ A returning customer books in 3 taps: treatment, *Book this time*, *Confirm*.
 
 ## Design system
 
+- Identity "Silk & Halo": the clinic's black, white and gold, with the restraint of leading clinics
+  (Clinique La Prairie, Ouronyx, 111 Harley St). Pearl background, Bodoni Moda headlines (Noto Serif Thai
+  for Thai), Jost body text, gold hairline rules, and one signature shape: the gold halo (`.halo`), used
+  only on brand moments (home hero, earliest time, confirmation). `.silk` is the black panel with a soft
+  gold glow; `--sheen` is the champagne foil used on the main gold button.
+- Treatments read like a printed menu (`.menu`: one card, hairline rows); categories are underlined
+  tabs (`.tab`); the tab bar is a floating black pill.
 - Tokens in `src/app/globals.css` (`ink`, `paper`, `cream`, `gold`, ...). Dark mode follows the phone and
   only redefines the tokens; `noir` stays black in both themes.
 - Shared pieces in `src/components/`: `icons.tsx` (one inline icon set), `sheet.tsx` (iOS-style bottom
@@ -44,7 +51,7 @@ A returning customer books in 3 taps: treatment, *Book this time*, *Confirm*.
 | **Phone + SMS code (OTP)**, no passwords | Least friction; phone number is also what the clinic needs. Codes are stored only as HMAC hashes, expire in 5 minutes, max 5 guesses, max 3 sends per 15 minutes. |
 | **Signed httpOnly cookies** (JWT via `jose`) | Simple, secure sessions without a session store. |
 | **Chat via short polling (3 s)** | Works on any host, including serverless, with no extra service. Can be swapped for Supabase Realtime or WebSockets later without UI changes. |
-| **Tailwind CSS**, Montserrat + Cormorant Garamond + Noto Sans Thai | Black, white and gold look of thekliniquethailand.com; tokens live in `src/app/globals.css`. Chinese uses the phone's system font (fast, no large download). |
+| **Tailwind CSS**, Jost + Bodoni Moda + Noto Sans/Serif Thai | Black, white and gold of thekliniquethailand.com in KLINIQUE's own "Silk & Halo" style; tokens live in `src/app/globals.css`. Chinese uses the phone's system font (fast, no large download). |
 
 ## Run locally
 
