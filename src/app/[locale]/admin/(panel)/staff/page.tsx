@@ -8,7 +8,7 @@ export default async function StaffAdminPage({ params }: PageProps<"/[locale]/ad
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-3xl font-semibold">{dict.admin.nav.staff}</h1>
+        <h1 className="font-display text-3xl font-medium">{dict.admin.nav.staff}</h1>
         <Link href={`/${locale}/admin/staff/new`} className="btn-primary py-2">+ {dict.admin.staff.new}</Link>
       </div>
       <ul className="space-y-2">

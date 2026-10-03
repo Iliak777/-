@@ -9,7 +9,7 @@ export function SignInGate({ title, intro }: { title: string; intro: string }) {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="font-display text-3xl font-semibold">{title}</h1>
+        <h1 className="font-display text-3xl font-medium">{title}</h1>
         <p className="mt-1 text-sm text-muted">{intro}</p>
       </div>
       <AuthForm onDone={() => router.refresh()} />

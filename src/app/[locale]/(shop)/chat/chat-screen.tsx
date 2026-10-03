@@ -35,7 +35,7 @@ export function ChatScreen() {
 
   return (
     <div className="fixed inset-x-0 z-10 mx-auto flex max-w-2xl flex-col px-4 pt-3 pb-2" style={style}>
-      <h1 className="font-display text-2xl font-semibold">{dict.chat.title}</h1>
+      <h1 className="font-display text-2xl font-medium">{dict.chat.title}</h1>
       <ChatWindow endpoint="/api/chat" me="customer" intro={dict.chat.intro} emptyText={dict.chat.empty} className="min-h-0 flex-1" />
     </div>
   );

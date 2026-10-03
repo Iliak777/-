@@ -1,43 +1,49 @@
 @import "tailwindcss";
 
 /*
- * Brand tokens, modelled on thekliniquethailand.com: black, white and gold.
+ * "Silk & Halo": KLINIQUE's own identity. It keeps the clinic's black, white and
+ * gold, and borrows the restraint of leading clinics (Clinique La Prairie,
+ * Ouronyx, 111 Harley St): pearl ground, fashion-house serif headlines, hairline
+ * gold rules, and one signature shape, the gold halo (a thin ring) used on brand
+ * moments: hero, earliest time, confirmation.
  * `ink` is the main text colour and `paper` the card colour; dark mode swaps
  * them, so components use the tokens and get both themes for free.
  * `noir` stays black in both themes (hero, brand moments).
  */
 :root {
-  --ink: #161412;
-  --paper: #ffffff;
-  --cream: #f8f5ef;
-  --noir: #161412;
-  --gold: #b08d57;
-  --gold-dark: #8a6a3a;
-  --gold-soft: #f3ebdd;
-  --line: #e8e1d5;
-  --muted: #6f6a62;
+  --ink: #15110e;
+  --paper: #fffdfa;
+  --cream: #f6f2ed;
+  --noir: #110e0c;
+  --gold: #b38e55;
+  --gold-dark: #80612c;
+  --gold-soft: #f1e8d8;
+  --line: #e7dfd3;
+  --muted: #6c655c;
   --danger: #b3261e;
   --success: #2f6b4f;
   --on-danger: #ffffff;
+  /* Champagne foil: brand moments only (primary gold button, halo, ticket edge). */
+  --sheen: linear-gradient(115deg, #8a6a35 0%, #c9a86e 30%, #f0dfb9 48%, #c9a86e 64%, #8f6f3a 100%);
   --header-h: 3.5rem;
-  --nav-h: calc(3.5rem + env(safe-area-inset-bottom));
+  --nav-h: calc(4.5rem + env(safe-area-inset-bottom));
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --ink: #f2ede4;
-    --paper: #1c1a17;
-    --cream: #11100e;
+    --ink: #f3eee6;
+    --paper: #1a1714;
+    --cream: #0d0b09;
     --noir: #000000;
-    --gold: #c6a36c;
-    --gold-dark: #d5b886;
-    --gold-soft: #2a2419;
-    --line: #2f2b26;
-    --muted: #a39c91;
+    --gold: #cfae74;
+    --gold-dark: #dcc08e;
+    --gold-soft: #2a2318;
+    --line: #2e2924;
+    --muted: #a49d92;
     --danger: #f2877f;
     --success: #7fc6a1;
-    --on-danger: #1c1a17;
+    --on-danger: #1a1714;
     color-scheme: dark;
   }
 }
@@ -56,7 +62,7 @@
   --color-success: var(--success);
   --color-on-danger: var(--on-danger);
   --font-sans: var(--font-body), var(--font-thai), "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
-  --font-display: var(--font-serif), var(--font-thai), "Songti SC", serif;
+  --font-display: var(--font-serif), var(--font-thai-serif), "Songti SC", "Noto Serif SC", serif;
 }
 
 body {
@@ -73,7 +79,7 @@ body {
 
 /* Buttons: at least 44pt tall (Apple's minimum touch target). */
 @utility btn {
-  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium tracking-wide transition select-none active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
+  @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium tracking-[0.06em] transition select-none active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
 }
 
 /* Component classes live in a layer so utilities (e.g. "pl-11") can still override them. */
@@ -90,7 +96,8 @@ body {
   }
   /* Dark text on gold: white on this gold fails contrast (3:1). */
   .btn-gold {
-    @apply btn bg-gold text-noir hover:brightness-105;
+    @apply btn text-noir shadow-[0_6px_20px_-8px_rgb(179_142_85/0.7)] hover:brightness-105;
+    background: var(--sheen);
   }
   .btn-ghost {
     @apply btn border border-line bg-paper px-5 text-ink hover:border-gold;
@@ -106,13 +113,59 @@ body {
     @apply w-full rounded-xl border border-line bg-paper px-4 py-3 text-base text-ink outline-none transition placeholder:text-muted/70 focus:border-gold focus:ring-2 focus:ring-gold/20;
   }
   .card {
-    @apply rounded-2xl border border-line bg-paper;
+    @apply rounded-[1.375rem] border border-line bg-paper;
+  }
+  /* A grouped list, like a printed treatment menu: one card, hairline rows. */
+  .menu {
+    @apply divide-y divide-line overflow-hidden rounded-[1.375rem] border border-line bg-paper;
   }
   .chip {
     @apply inline-flex min-h-10 shrink-0 items-center justify-center rounded-full border border-line bg-paper px-4 text-sm text-ink transition active:scale-[0.97];
   }
   .chip[aria-pressed="true"] {
-    @apply border-ink bg-ink text-paper;
+    @apply border-noir bg-noir text-gold;
+  }
+  /* Category tabs: text with a gold underline, quieter than pills. */
+  .tab {
+    @apply relative inline-flex min-h-11 shrink-0 items-center px-1 text-sm text-muted transition;
+  }
+  .tab[aria-pressed="true"] {
+    @apply text-ink;
+  }
+  .tab[aria-pressed="true"]::after {
+    content: "";
+    @apply absolute inset-x-1 bottom-1.5 h-[2px] rounded-full;
+    background: var(--sheen);
+  }
+  /* The signature halo: two fine gold rings, drawn behind brand moments. */
+  .halo {
+    @apply pointer-events-none absolute aspect-square rounded-full border;
+    border-color: color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+  .halo::after {
+    content: "";
+    @apply absolute inset-[9%] rounded-full border;
+    border-color: color-mix(in srgb, var(--gold) 22%, transparent);
+  }
+  /* Silk: a soft gold glow over black, for the noir panels. */
+  .silk {
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgb(201 168 110 / 0.28), transparent 55%),
+      radial-gradient(90% 70% at 0% 100%, rgb(201 168 110 / 0.12), transparent 60%),
+      var(--noir);
+    /* A faint edge so the panel still reads on the black dark-mode ground. */
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.07);
+  }
+  /* Gold hairline rule that fades out at both ends. */
+  .rule-gold {
+    @apply h-px w-full border-0;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .text-sheen {
+    background: var(--sheen);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   /* The search field has its own clear button. */
   input[type="search"]::-webkit-search-cancel-button {
@@ -127,7 +180,11 @@ body {
 
   /* Wide letter-spacing breaks Thai and Chinese scripts. */
   :lang(th) .eyebrow,
-  :lang(zh) .eyebrow {
+  :lang(zh) .eyebrow,
+  :lang(th) .btn-primary,
+  :lang(zh) .btn-primary,
+  :lang(th) .btn-gold,
+  :lang(zh) .btn-gold {
     letter-spacing: 0.04em;
   }
 }

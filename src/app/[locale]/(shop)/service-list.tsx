@@ -44,12 +44,12 @@ export function ServiceList({ categories, services }: { categories: Category[]; 
             </button>
           )}
         </label>
-        <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4" role="group" aria-label={dict.home.categories}>
-          <button className="chip" aria-pressed={cat === null} onClick={() => setCat(null)}>
+        <div className="no-scrollbar -mx-4 flex gap-5 overflow-x-auto border-b border-line px-5" role="group" aria-label={dict.home.categories}>
+          <button className="tab" aria-pressed={cat === null} onClick={() => setCat(null)}>
             {dict.home.all}
           </button>
           {categories.map((c) => (
-            <button key={c.id} className="chip" aria-pressed={cat === c.id} onClick={() => setCat(c.id)}>
+            <button key={c.id} className="tab" aria-pressed={cat === c.id} onClick={() => setCat(c.id)}>
               {c.name}
             </button>
           ))}
@@ -59,11 +59,16 @@ export function ServiceList({ categories, services }: { categories: Category[]; 
       {shown.length === 0 ? (
         <EmptyState icon="search" title={dict.home.noResults} text={dict.home.noResultsHint} />
       ) : (
-        <div className="mt-1 space-y-6">
+        <div className="mt-2 space-y-8">
           {groups.map((g) => (
             <div key={g.id}>
-              {g.name && <h2 className="eyebrow mb-2.5 text-muted">{g.name}</h2>}
-              <ul className="space-y-2.5">
+              {g.name && (
+                <h2 className="mb-3 flex items-center gap-3 font-display text-xl font-medium">
+                  {g.name}
+                  <span aria-hidden className="h-px flex-1 bg-gradient-to-r from-gold/60 to-transparent" />
+                </h2>
+              )}
+              <ul className="menu">
                 {g.items.map((s) => (
                   <li key={s.id}>
                     <ServiceCard s={s} />
@@ -81,19 +86,22 @@ export function ServiceList({ categories, services }: { categories: Category[]; 
 function ServiceCard({ s }: { s: Item }) {
   const { locale, dict } = useI18n();
   return (
-    <Link href={`/${locale}/book/${s.id}`} className="card flex items-center gap-3 p-4 transition hover:border-gold active:scale-[0.99] active:bg-cream">
+    <Link href={`/${locale}/book/${s.id}`} className="group flex items-center gap-3 px-4 py-4 transition active:bg-cream">
       <div className="min-w-0 flex-1">
-        <h3 className="font-medium">{s.name}</h3>
-        <p className="mt-0.5 line-clamp-2 text-sm text-muted">{s.description}</p>
-        <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gold-dark">
+        <h3 className="text-[1.02rem] font-medium">{s.name}</h3>
+        <p className="mt-0.5 line-clamp-2 text-sm leading-snug text-muted">{s.description}</p>
+        <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gold-dark">
           <span className="inline-flex items-center gap-1">
             <Icon name="clock" className="h-3.5 w-3.5" />
             {fmt(dict.common.minutes, { n: s.durationMin })}
           </span>
+          <span aria-hidden className="h-0.5 w-0.5 rounded-full bg-gold" />
           <span>{s.priceThb === null ? dict.common.priceOnConsultation : formatThb(s.priceThb, locale)}</span>
         </p>
       </div>
-      <Icon name="chevronRight" className="h-5 w-5 text-gold" />
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-gold-dark transition group-hover:border-gold group-active:bg-noir group-active:text-gold">
+        <Icon name="chevronRight" className="h-4 w-4" />
+      </span>
     </Link>
   );
 }

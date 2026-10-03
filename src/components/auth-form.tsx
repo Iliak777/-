@@ -71,7 +71,7 @@ export function AuthForm({ onDone, compact = false }: { onDone: (name: string) =
 
   return (
     <div className={compact ? "" : "card p-5"}>
-      <h2 className="font-display text-2xl font-semibold">{t.title}</h2>
+      <h2 className="font-display text-2xl font-medium">{t.title}</h2>
       <p className="mt-1 text-sm text-muted">{t.subtitle}</p>
 
       {step.kind === "phone" ? (

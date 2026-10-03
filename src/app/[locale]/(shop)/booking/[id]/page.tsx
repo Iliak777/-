@@ -39,29 +39,33 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
     <div className="space-y-5">
       {justBooked ? (
         <div className="pt-4 text-center">
-          <div className="animate-check mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gold text-noir">
-            <Icon name="check" className="h-8 w-8" strokeWidth={2.2} />
+          <div className="relative mx-auto flex h-28 w-28 items-center justify-center">
+            <span aria-hidden className="halo inset-0 animate-fade" />
+            <span className="animate-check flex h-16 w-16 items-center justify-center rounded-full text-noir shadow-[0_8px_24px_-10px_rgb(179_142_85/0.8)]" style={{ background: "var(--sheen)" }}>
+              <Icon name="check" className="h-8 w-8" strokeWidth={2.2} />
+            </span>
           </div>
-          <h1 className="mt-4 font-display text-3xl font-semibold">{sp.changed === "1" ? t.changedTitle : t.title}</h1>
+          <h1 className="mt-4 font-display text-3xl font-medium">{sp.changed === "1" ? t.changedTitle : t.title}</h1>
           <p className="mt-1 text-muted">{t.subtitle}</p>
         </div>
       ) : (
         <div>
           <BackLink href={`/${locale}/me`} label={dict.nav.myBookings} />
           <div className="flex items-end justify-between gap-3">
-            <h1 className="font-display text-3xl font-semibold">{t.details}</h1>
+            <h1 className="font-display text-3xl font-medium">{t.details}</h1>
             <StatusPill status={booking.status} label={dict.me.status[booking.status]} />
           </div>
         </div>
       )}
 
       <div className="card overflow-hidden">
-        <div className="flex items-center justify-between gap-3 bg-noir px-5 py-4 text-white">
+        <div className="silk relative isolate flex items-center justify-between gap-3 overflow-hidden px-5 py-5 text-white">
+          <span aria-hidden className="halo -top-10 -right-10 w-32" />
           <div>
             <p className="eyebrow text-gold">{t.ref}</p>
-            <p className="font-mono text-2xl tracking-[0.2em]">{booking.ref}</p>
+            <p className="mt-1 font-mono text-2xl tracking-[0.2em] text-sheen">{booking.ref}</p>
           </div>
-          <Icon name="sparkle" className="h-7 w-7 text-gold" />
+          <Icon name="sparkle" className="relative h-7 w-7 text-gold" />
         </div>
         <dl className="space-y-3 px-5 py-4">
           {rows.map(([k, v]) => (

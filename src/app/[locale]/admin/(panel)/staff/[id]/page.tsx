@@ -19,7 +19,7 @@ export default async function StaffEditPage({ params }: PageProps<"/[locale]/adm
   return (
     <div className="max-w-2xl space-y-8">
       <form action={saveStaff} className="space-y-5">
-        <h1 className="font-display text-3xl font-semibold">{isNew ? t.new : t.edit}</h1>
+        <h1 className="font-display text-3xl font-medium">{isNew ? t.new : t.edit}</h1>
         <input type="hidden" name="locale" value={locale} />
         {person && <input type="hidden" name="id" value={person.id} />}
         <label className="block">

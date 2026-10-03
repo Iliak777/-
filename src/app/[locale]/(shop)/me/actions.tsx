@@ -59,7 +59,7 @@ export function DeleteAccountButton() {
         {t.deleteAccount}
       </button>
       <Sheet open={open} onClose={() => setOpen(false)} title={t.deleteAccount} locked={busy}>
-        <p className="font-display text-2xl leading-tight font-semibold">{t.deleteConfirm}</p>
+        <p className="font-display text-2xl leading-tight font-medium">{t.deleteConfirm}</p>
         <p className="mt-2 text-sm text-muted">{t.deleteExplain}</p>
         {error && (
           <p role="alert" className="animate-pop mt-3 flex items-center gap-2 text-sm text-danger">

@@ -14,7 +14,7 @@ export default async function PrivacyPage({ params }: PageProps<"/[locale]/priva
   return (
     <article className="space-y-5">
       <BackLink href={`/${locale}/me`} label={dict.nav.myBookings} />
-      <h1 className="-mt-2 font-display text-3xl font-semibold">{t.title}</h1>
+      <h1 className="-mt-2 font-display text-3xl font-medium">{t.title}</h1>
       <p className="text-sm text-muted">{t.intro}</p>
       {t.sections.map((s) => (
         <section key={s.heading} className="space-y-1">

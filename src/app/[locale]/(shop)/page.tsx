@@ -42,21 +42,24 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   return (
     <div className="space-y-6">
       {customer ? (
-        <section>
-          <p className="text-sm text-muted">{fmt(dict.home.hello, { name: customer.name.split(" ")[0] })}</p>
-          <h1 className="font-display text-[2rem] leading-tight font-semibold">{dict.home.whatToday}</h1>
+        <section className="pt-2">
+          <p className="eyebrow text-gold-dark">{fmt(dict.home.hello, { name: customer.name.split(" ")[0] })}</p>
+          <h1 className="mt-1.5 font-display text-[2.15rem] leading-[1.1] font-medium text-balance">{dict.home.whatToday}</h1>
         </section>
       ) : (
-        <section className="rounded-3xl bg-noir px-5 py-6 text-white">
+        <section className="silk relative isolate overflow-hidden rounded-[1.75rem] px-6 pt-8 pb-7 text-white">
+          <span aria-hidden className="halo -top-28 -right-24 w-64 opacity-80" />
+          <span aria-hidden className="halo -top-14 -right-12 w-40 opacity-50" />
           <p className="eyebrow text-gold">{dict.common.tagline}</p>
-          <h1 className="mt-2 font-display text-[1.85rem] leading-tight font-semibold">{dict.home.heroTitle}</h1>
-          <p className="mt-1.5 text-sm text-white/70">{dict.home.heroSubtitle}</p>
+          <h1 className="mt-4 max-w-[16ch] font-display text-[2.1rem] leading-[1.08] font-medium text-balance">{dict.home.heroTitle}</h1>
+          <hr className="rule-gold my-5 max-w-40 opacity-70" />
+          <p className="max-w-[34ch] text-sm leading-relaxed text-white/70">{dict.home.heroSubtitle}</p>
         </section>
       )}
 
       {next && (
         <Link href={`/${locale}/booking/${next.id}`} className="card flex items-center gap-4 border-gold/50 p-4 transition active:scale-[0.99]">
-          <span className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-gold-soft text-gold-dark">
+          <span className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-full border border-gold/50 bg-gold-soft text-gold-dark">
             <Icon name="calendar" className="h-5 w-5" />
           </span>
           <span className="min-w-0 flex-1">
@@ -85,7 +88,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <ServiceList categories={usedCats} services={items} />
 
       <Link href={`/${locale}/chat`} className="card flex items-center gap-4 p-4 transition active:scale-[0.99]">
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-noir text-gold">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-noir text-gold ring-1 ring-gold/40 ring-offset-2 ring-offset-paper">
           <Icon name="chat" className="h-5 w-5" />
         </span>
         <span className="min-w-0 flex-1">
