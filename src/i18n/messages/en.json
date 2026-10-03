@@ -1,0 +1,161 @@
+{
+  "common": {
+    "appName": "THE KLINIQUE",
+    "tagline": "Medical Aesthetic & Surgical Centre",
+    "back": "Back",
+    "cancel": "Cancel",
+    "save": "Save",
+    "loading": "Loading…",
+    "error": "Something went wrong. Please try again.",
+    "priceOnConsultation": "Price on consultation",
+    "minutes": "{n} min",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "language": "Language",
+    "address": "Siam Square Soi 7, Bangkok"
+  },
+  "nav": {
+    "treatments": "Treatments",
+    "myBookings": "My bookings",
+    "chat": "Consult",
+    "signOut": "Sign out"
+  },
+  "home": {
+    "heroTitle": "Your treatment, booked in seconds",
+    "heroSubtitle": "Pick a treatment and take the earliest free time, or choose your own.",
+    "chatCta": "Not sure what you need? Ask our consultant",
+    "all": "All"
+  },
+  "book": {
+    "earliestTitle": "Earliest available",
+    "earliestWith": "with {staff}",
+    "bookEarliest": "Book this time",
+    "orChoose": "Or choose a time",
+    "anyPractitioner": "Any",
+    "practitioner": "Practitioner",
+    "noSlots": "No free times on this day.",
+    "noSlotsAtAll": "No free times in the next 30 days. Please contact us.",
+    "confirmTitle": "Confirm your booking",
+    "confirmButton": "Confirm booking",
+    "bookingAs": "Booking as {name}",
+    "slotTaken": "Sorry, that time was just taken. Please pick another.",
+    "payAtClinic": "No payment now. You pay at the clinic."
+  },
+  "auth": {
+    "title": "Verify your phone",
+    "subtitle": "We send a one-time code by SMS. No password needed.",
+    "phoneLabel": "Mobile number",
+    "phonePlaceholder": "081 234 5678 or +44 7700 900123",
+    "sendCode": "Send code",
+    "codeLabel": "6-digit code",
+    "codeSent": "Code sent to {phone}.",
+    "verify": "Continue",
+    "nameLabel": "Your name",
+    "nameHint": "First visit? Tell us your name.",
+    "changePhone": "Change number",
+    "invalidPhone": "Please enter a valid mobile number. Tourists: include your country code, e.g. +44.",
+    "invalid_code": "That code is not correct.",
+    "expired": "The code has expired. Please request a new one.",
+    "rate_limited": "Too many codes requested. Please wait 15 minutes.",
+    "name_required": "Please enter your name.",
+    "devCode": "Demo mode, your code is {code}"
+  },
+  "confirmation": {
+    "title": "You're booked!",
+    "subtitle": "See you at THE KLINIQUE.",
+    "ref": "Booking reference",
+    "treatment": "Treatment",
+    "when": "When",
+    "practitioner": "Practitioner",
+    "price": "Price",
+    "where": "Where",
+    "viewBookings": "View my bookings",
+    "bookAnother": "Book another treatment"
+  },
+  "me": {
+    "title": "My bookings",
+    "upcoming": "Upcoming",
+    "past": "Past",
+    "none": "You have no bookings yet.",
+    "cancelBooking": "Cancel booking",
+    "cancelConfirm": "Cancel this booking?",
+    "status": {
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "completed": "Completed",
+      "no_show": "Missed"
+    }
+  },
+  "chat": {
+    "title": "Consult with us",
+    "intro": "Ask our consultant anything about treatments, prices or recovery. We reply during clinic hours, 10:00 to 20:00.",
+    "placeholder": "Type your message…",
+    "send": "Send",
+    "empty": "Say hello and tell us what you would like to improve.",
+    "you": "You",
+    "clinic": "THE KLINIQUE"
+  },
+  "admin": {
+    "title": "Clinic admin",
+    "login": "Sign in",
+    "email": "Email",
+    "password": "Password",
+    "badLogin": "Wrong email or password.",
+    "signOut": "Sign out",
+    "nav": {
+      "appointments": "Appointments",
+      "inbox": "Chat",
+      "services": "Treatments",
+      "staff": "Practitioners"
+    },
+    "appointments": {
+      "date": "Date",
+      "none": "No appointments on this day.",
+      "time": "Time",
+      "customer": "Customer",
+      "treatment": "Treatment",
+      "practitioner": "Practitioner",
+      "status": "Status",
+      "markCompleted": "Completed",
+      "markNoShow": "No-show",
+      "cancel": "Cancel"
+    },
+    "inbox": {
+      "none": "No conversations yet.",
+      "unread": "New",
+      "reply": "Reply",
+      "select": "Select a conversation."
+    },
+    "services": {
+      "new": "New treatment",
+      "edit": "Edit treatment",
+      "nameEn": "Name (English)",
+      "nameTh": "Name (Thai)",
+      "nameZh": "Name (Chinese)",
+      "descEn": "Description (English)",
+      "descTh": "Description (Thai)",
+      "descZh": "Description (Chinese)",
+      "category": "Category",
+      "noCategory": "No category",
+      "duration": "Duration (minutes)",
+      "price": "Price (THB), empty = on consultation",
+      "active": "Bookable",
+      "inactive": "Hidden"
+    },
+    "staff": {
+      "new": "New practitioner",
+      "edit": "Edit practitioner",
+      "name": "Name",
+      "active": "Active",
+      "treatments": "Treatments they perform",
+      "hours": "Weekly hours (empty = day off)",
+      "timeOff": "Time off",
+      "addTimeOff": "Add time off",
+      "from": "From",
+      "to": "To",
+      "note": "Note",
+      "remove": "Remove",
+      "weekdays": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    }
+  }
+}

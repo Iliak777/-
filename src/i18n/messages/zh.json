@@ -1,0 +1,161 @@
+{
+  "common": {
+    "appName": "THE KLINIQUE",
+    "tagline": "医学美容与整形中心",
+    "back": "返回",
+    "cancel": "取消",
+    "save": "保存",
+    "loading": "加载中…",
+    "error": "出错了，请重试。",
+    "priceOnConsultation": "价格需面诊评估",
+    "minutes": "{n} 分钟",
+    "today": "今天",
+    "tomorrow": "明天",
+    "language": "语言",
+    "address": "曼谷暹罗广场 7 巷"
+  },
+  "nav": {
+    "treatments": "项目",
+    "myBookings": "我的预约",
+    "chat": "咨询",
+    "signOut": "退出登录"
+  },
+  "home": {
+    "heroTitle": "几秒钟完成预约",
+    "heroSubtitle": "选择项目，预约最早的空档，或自选时间。",
+    "chatCta": "不确定适合哪个项目？咨询我们的顾问",
+    "all": "全部"
+  },
+  "book": {
+    "earliestTitle": "最早可约时间",
+    "earliestWith": "医师：{staff}",
+    "bookEarliest": "预约此时间",
+    "orChoose": "或自选时间",
+    "anyPractitioner": "不限",
+    "practitioner": "医师",
+    "noSlots": "当天没有空档。",
+    "noSlotsAtAll": "未来 30 天没有空档，请联系我们。",
+    "confirmTitle": "确认预约",
+    "confirmButton": "确认预约",
+    "bookingAs": "预约人：{name}",
+    "slotTaken": "抱歉，该时间刚被预约，请选择其他时间。",
+    "payAtClinic": "现在无需付款，到店支付。"
+  },
+  "auth": {
+    "title": "验证手机号",
+    "subtitle": "我们将通过短信发送一次性验证码，无需密码。",
+    "phoneLabel": "手机号码",
+    "phonePlaceholder": "+86 138 0013 8000",
+    "sendCode": "发送验证码",
+    "codeLabel": "6 位验证码",
+    "codeSent": "验证码已发送至 {phone}。",
+    "verify": "继续",
+    "nameLabel": "您的姓名",
+    "nameHint": "首次预约？请告诉我们您的姓名。",
+    "changePhone": "更换号码",
+    "invalidPhone": "请输入有效的手机号码。外国游客请加国家代码，例如 +86。",
+    "invalid_code": "验证码不正确。",
+    "expired": "验证码已过期，请重新获取。",
+    "rate_limited": "请求过于频繁，请 15 分钟后再试。",
+    "name_required": "请输入您的姓名。",
+    "devCode": "演示模式，您的验证码是 {code}"
+  },
+  "confirmation": {
+    "title": "预约成功！",
+    "subtitle": "期待在 THE KLINIQUE 与您见面。",
+    "ref": "预约编号",
+    "treatment": "项目",
+    "when": "时间",
+    "practitioner": "医师",
+    "price": "价格",
+    "where": "地址",
+    "viewBookings": "查看我的预约",
+    "bookAnother": "预约其他项目"
+  },
+  "me": {
+    "title": "我的预约",
+    "upcoming": "即将到来",
+    "past": "历史预约",
+    "none": "您还没有预约。",
+    "cancelBooking": "取消预约",
+    "cancelConfirm": "确定取消此预约？",
+    "status": {
+      "confirmed": "已确认",
+      "cancelled": "已取消",
+      "completed": "已完成",
+      "no_show": "未到店"
+    }
+  },
+  "chat": {
+    "title": "在线咨询",
+    "intro": "关于项目、价格或恢复期的任何问题都可以咨询我们。营业时间 10:00 至 20:00 内回复。",
+    "placeholder": "输入消息…",
+    "send": "发送",
+    "empty": "打个招呼，告诉我们您想改善什么。",
+    "you": "您",
+    "clinic": "THE KLINIQUE"
+  },
+  "admin": {
+    "title": "诊所管理",
+    "login": "登录",
+    "email": "邮箱",
+    "password": "密码",
+    "badLogin": "邮箱或密码错误。",
+    "signOut": "退出登录",
+    "nav": {
+      "appointments": "预约",
+      "inbox": "聊天",
+      "services": "项目",
+      "staff": "医师"
+    },
+    "appointments": {
+      "date": "日期",
+      "none": "当天没有预约。",
+      "time": "时间",
+      "customer": "客户",
+      "treatment": "项目",
+      "practitioner": "医师",
+      "status": "状态",
+      "markCompleted": "已完成",
+      "markNoShow": "未到店",
+      "cancel": "取消"
+    },
+    "inbox": {
+      "none": "暂无对话。",
+      "unread": "新",
+      "reply": "回复",
+      "select": "请选择对话。"
+    },
+    "services": {
+      "new": "新增项目",
+      "edit": "编辑项目",
+      "nameEn": "名称（英文）",
+      "nameTh": "名称（泰文）",
+      "nameZh": "名称（中文）",
+      "descEn": "描述（英文）",
+      "descTh": "描述（泰文）",
+      "descZh": "描述（中文）",
+      "category": "分类",
+      "noCategory": "无分类",
+      "duration": "时长（分钟）",
+      "price": "价格（泰铢），留空 = 面诊评估",
+      "active": "可预约",
+      "inactive": "隐藏"
+    },
+    "staff": {
+      "new": "新增医师",
+      "edit": "编辑医师",
+      "name": "姓名",
+      "active": "在职",
+      "treatments": "可做项目",
+      "hours": "每周工作时间（留空 = 休息）",
+      "timeOff": "请假",
+      "addTimeOff": "添加请假",
+      "from": "从",
+      "to": "到",
+      "note": "备注",
+      "remove": "删除",
+      "weekdays": ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
+    }
+  }
+}

@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
+/* Brand tokens, modelled on thekliniquethailand.com: black, white and gold. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ink: #161412;
+  --paper: #ffffff;
+  --cream: #f8f5ef;
+  --gold: #b08d57;
+  --gold-dark: #8a6a3a;
+  --line: #e8e1d5;
+  --muted: #6f6a62;
+  --danger: #b3261e;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-cream: var(--cream);
+  --color-gold: var(--gold);
+  --color-gold-dark: var(--gold-dark);
+  --color-line: var(--line);
+  --color-muted: var(--muted);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-body), var(--font-thai), "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --font-display: var(--font-serif), var(--font-thai), "Songti SC", serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Spaced uppercase labels, like the website's navigation. */
+.eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-ink px-6 py-3.5 text-sm font-medium tracking-wide text-paper transition active:scale-[0.98] disabled:opacity-50;
+}
+.btn-gold {
+  @apply inline-flex items-center justify-center rounded-full bg-gold px-6 py-3.5 text-sm font-medium tracking-wide text-paper transition hover:bg-gold-dark active:scale-[0.98] disabled:opacity-50;
+}
+.btn-ghost {
+  @apply inline-flex items-center justify-center rounded-full border border-line bg-paper px-5 py-3 text-sm text-ink transition hover:border-gold active:scale-[0.98] disabled:opacity-50;
+}
+.input {
+  @apply w-full rounded-xl border border-line bg-paper px-4 py-3 text-base outline-none focus:border-gold;
+}
+.card {
+  @apply rounded-2xl border border-line bg-paper;
+}
+
+/* Wide letter-spacing breaks Thai and Chinese scripts. */
+:lang(th) .eyebrow,
+:lang(zh) .eyebrow {
+  letter-spacing: 0.04em;
 }
