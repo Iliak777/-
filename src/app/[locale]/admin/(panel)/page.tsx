@@ -5,6 +5,7 @@ import { pageI18n } from "@/i18n/server";
 import { addDays, isValidDateString, localDateString, localToUtc } from "@/lib/time";
 import { setAppointmentStatus } from "@/server/admin-actions";
 import { appointmentsOn } from "@/server/admin-queries";
+import { DELETED_PHONE_PREFIX } from "@/server/customer";
 
 export default async function AppointmentsPage({ params, searchParams }: PageProps<"/[locale]/admin">) {
   const { locale, dict } = await pageI18n(params);
@@ -51,7 +52,7 @@ export default async function AppointmentsPage({ params, searchParams }: PagePro
               </div>
               <div className="min-w-40 flex-1 text-sm">
                 <p>{r.customerName}</p>
-                <a className="text-muted hover:underline" href={`tel:${r.phone}`}>{r.phone}</a>
+                {!r.phone.startsWith(DELETED_PHONE_PREFIX) && <a className="text-muted hover:underline" href={`tel:${r.phone}`}>{r.phone}</a>}
               </div>
               <div className="flex items-center gap-2">
                 <span className="eyebrow text-gold-dark">{dict.me.status[r.status]}</span>

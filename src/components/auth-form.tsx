@@ -1,13 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fmt } from "@/i18n/config";
+import { api } from "@/lib/api";
 import { useI18n } from "./i18n-provider";
+import { Icon } from "./icons";
 
 type Step = { kind: "phone" } | { kind: "code"; phone: string; devCode?: string; needName: boolean };
 
-/** Phone number + SMS code sign-in. Calls `onDone` once the session cookie is set. */
-export function AuthForm({ onDone, compact = false }: { onDone: () => void; compact?: boolean }) {
+const RESEND_AFTER_SEC = 30;
+
+/**
+ * Phone number + SMS code sign-in. Calls `onDone` with the customer's name once
+ * the session cookie is set. The code submits by itself on the 6th digit.
+ */
+export function AuthForm({ onDone, compact = false }: { onDone: (name: string) => void; compact?: boolean }) {
   const { dict } = useI18n();
   const t = dict.auth;
   const [step, setStep] = useState<Step>({ kind: "phone" });
@@ -16,36 +23,50 @@ export function AuthForm({ onDone, compact = false }: { onDone: () => void; comp
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [resendIn, setResendIn] = useState(0);
+  const form = useRef<HTMLFormElement>(null);
 
-  async function post(url: string, body: unknown) {
-    const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-    return { ok: res.ok, data: await res.json().catch(() => ({})) };
-  }
+  useEffect(() => {
+    if (resendIn <= 0) return;
+    const timer = setTimeout(() => setResendIn((s) => s - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [resendIn]);
 
-  async function sendCode(e: React.FormEvent) {
-    e.preventDefault();
+  const message = (err?: string) =>
+    err === "network" ? dict.common.offline : err === "invalid_phone" ? t.invalidPhone : (t[err as keyof typeof t] as string | undefined) ?? dict.common.error;
+
+  async function sendCode(e?: React.FormEvent) {
+    e?.preventDefault();
     setBusy(true);
     setError(null);
-    const { ok, data } = await post("/api/auth/otp", { phone });
+    const res = await api<{ phone: string; devCode?: string }>("/api/auth/otp", { body: { phone } });
     setBusy(false);
-    if (!ok) return setError(data.error === "invalid_phone" ? t.invalidPhone : (t[data.error as keyof typeof t] ?? dict.common.error));
+    if (!res.ok) return setError(message(res.error));
     setCode("");
-    setStep({ kind: "code", phone: data.phone, devCode: data.devCode, needName: false });
+    setResendIn(RESEND_AFTER_SEC);
+    setStep({ kind: "code", phone: res.data.phone, devCode: res.data.devCode, needName: step.kind === "code" && step.needName });
   }
 
-  async function verify(e: React.FormEvent) {
-    e.preventDefault();
-    if (step.kind !== "code") return;
+  async function verify(e?: React.FormEvent) {
+    e?.preventDefault();
+    if (step.kind !== "code" || busy) return;
     setBusy(true);
     setError(null);
-    const { ok, data } = await post("/api/auth/verify", { phone: step.phone, code, name: name || undefined });
+    const res = await api<{ name: string }>("/api/auth/verify", { body: { phone: step.phone, code, name: name.trim() || undefined } });
+    if (res.ok) return onDone(res.data.name);
     setBusy(false);
-    if (ok) return onDone();
-    if (data.error === "name_required") {
+    if (res.error === "name_required") {
       if (step.needName) setError(t.name_required);
       return setStep({ ...step, needName: true });
     }
-    setError(t[data.error as keyof typeof t] ?? dict.common.error);
+    setError(message(res.error));
+  }
+
+  function onCode(value: string) {
+    const digits = value.replace(/\D/g, "").slice(0, 6);
+    setCode(digits);
+    // Saves a tap; a first-time customer still has to add a name.
+    if (digits.length === 6 && step.kind === "code" && !step.needName) setTimeout(() => form.current?.requestSubmit(), 0);
   }
 
   return (
@@ -62,52 +83,65 @@ export function AuthForm({ onDone, compact = false }: { onDone: () => void; comp
               type="tel"
               inputMode="tel"
               autoComplete="tel"
+              enterKeyHint="send"
               placeholder={t.phonePlaceholder}
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              autoFocus={compact}
               required
             />
           </label>
-          <button className="btn-primary w-full" disabled={busy || !phone}>
-            {t.sendCode}
+          <button className="btn-primary w-full" disabled={busy || !phone.trim()}>
+            {busy ? dict.common.loading : t.sendCode}
           </button>
         </form>
       ) : (
-        <form onSubmit={verify} className="mt-4 space-y-3">
+        <form ref={form} onSubmit={verify} className="mt-4 space-y-3">
           <p className="text-sm">
             {fmt(t.codeSent, { phone: step.phone })}{" "}
-            <button type="button" className="text-gold-dark underline" onClick={() => setStep({ kind: "phone" })}>
+            <button type="button" className="font-medium text-gold-dark underline underline-offset-4" onClick={() => setStep({ kind: "phone" })}>
               {t.changePhone}
             </button>
           </p>
-          {step.devCode && <p className="rounded-xl bg-cream px-3 py-2 text-sm">{fmt(t.devCode, { code: step.devCode })}</p>}
+          {step.devCode && <p className="rounded-xl bg-gold-soft px-3 py-2 text-sm">{fmt(t.devCode, { code: step.devCode })}</p>}
           <label className="block">
             <span className="eyebrow text-muted">{t.codeLabel}</span>
             <input
-              className="input mt-1 text-center text-2xl tracking-[0.5em]"
+              className="input mt-1 text-center font-mono text-2xl tracking-[0.5em]"
               inputMode="numeric"
               autoComplete="one-time-code"
+              enterKeyHint="done"
               pattern="\d{6}"
               maxLength={6}
               value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
+              onChange={(e) => onCode(e.target.value)}
+              aria-invalid={!!error}
               autoFocus
               required
             />
           </label>
           {step.needName && (
-            <label className="block">
+            <label className="animate-pop block">
               <span className="eyebrow text-muted">{t.nameLabel}</span>
               <span className="block text-xs text-muted">{t.nameHint}</span>
-              <input className="input mt-1" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} autoFocus required maxLength={80} />
+              <input className="input mt-1" autoComplete="name" enterKeyHint="done" value={name} onChange={(e) => setName(e.target.value)} autoFocus required maxLength={80} />
             </label>
           )}
           <button className="btn-primary w-full" disabled={busy || code.length !== 6}>
-            {t.verify}
+            {busy ? dict.common.loading : t.verify}
+          </button>
+          <button type="button" className="btn-link mx-auto flex disabled:text-muted" disabled={busy || resendIn > 0} onClick={() => sendCode()}>
+            <Icon name="refresh" className="h-4 w-4" />
+            {resendIn > 0 ? fmt(t.resendIn, { s: resendIn }) : t.resend}
           </button>
         </form>
       )}
-      {error && <p role="alert" className="mt-3 text-sm text-danger">{error}</p>}
+      {error && (
+        <p role="alert" className="animate-pop mt-3 flex items-center gap-2 text-sm text-danger">
+          <Icon name="alert" className="h-4 w-4" />
+          {error}
+        </p>
+      )}
     </div>
   );
 }

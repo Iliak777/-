@@ -3,11 +3,12 @@
  * so the double-booking constraint is exercised for real.
  */
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db, pgClient } from "@/db";
-import { customers, services, staff, staffServices, workingHours } from "@/db/schema";
+import { appointments, customers, services, staff, staffServices, workingHours } from "@/db/schema";
 import { localToUtc, weekdayOf } from "@/lib/time";
-import { cancelCustomerBooking, createBooking, getDaySlots, getEarliestSlot } from "./booking";
+import { cancelCustomerBooking, createBooking, getCustomerBooking, getDaySlots, getEarliestSlot, MAX_UPCOMING_BOOKINGS } from "./booking";
+import { deleteCustomerAccount } from "./customer";
 import { requestOtp, verifyOtp } from "./otp";
 
 const DATE = "2026-11-02"; // Monday
@@ -69,6 +70,45 @@ describe("booking", () => {
     expect((await getDaySlots(serviceId, DATE, staffA, NOW)).map((s) => s.start.getTime())).not.toContain(at(600).getTime());
     expect(await cancelCustomerBooking(customerId, res.id, NOW)).toBe(true);
     expect((await getDaySlots(serviceId, DATE, staffA, NOW)).map((s) => s.start.getTime())).toContain(at(600).getTime());
+  });
+
+  it("caps the number of upcoming bookings per customer", async () => {
+    const day = 24 * 60 * 60_000;
+    await db.insert(appointments).values(
+      Array.from({ length: MAX_UPCOMING_BOOKINGS }, (_, i) => ({
+        ref: `CAP${i}`,
+        customerId,
+        serviceId,
+        staffId: staffA,
+        startsAt: new Date(at(600).getTime() + (i + 1) * day),
+        endsAt: new Date(at(660).getTime() + (i + 1) * day),
+      })),
+    );
+    expect(await createBooking({ customerId, serviceId, staffId: null, startsAt: at(600), locale: "en", now: NOW })).toEqual({ ok: false, error: "too_many" });
+  });
+
+  it("moves a booking to a new time and frees the old one", async () => {
+    const old = await createBooking({ customerId, serviceId, staffId: staffA, startsAt: at(600), locale: "en", now: NOW });
+    if (!old.ok) throw new Error("booking failed");
+    const moved = await createBooking({ customerId, serviceId, staffId: staffA, startsAt: at(660), locale: "en", replaceId: old.id, now: NOW });
+    expect(moved.ok).toBe(true);
+    expect((await getCustomerBooking(customerId, old.id))?.status).toBe("cancelled");
+    expect((await getDaySlots(serviceId, DATE, staffA, NOW)).map((s) => s.start.getTime())).toContain(at(600).getTime());
+    // A booking that is already cancelled cannot be moved again.
+    expect(await createBooking({ customerId, serviceId, staffId: staffA, startsAt: at(615), locale: "en", replaceId: old.id, now: NOW })).toEqual({
+      ok: false,
+      error: "not_changeable",
+    });
+  });
+
+  it("deletes a customer's personal data and cancels upcoming bookings", async () => {
+    const res = await createBooking({ customerId, serviceId, staffId: staffA, startsAt: at(600), locale: "en", now: NOW });
+    if (!res.ok) throw new Error("booking failed");
+    await deleteCustomerAccount(customerId, NOW);
+    const [row] = await db.select().from(customers).where(eq(customers.id, customerId));
+    expect(row.name).toBe("Deleted customer");
+    expect(row.phone).not.toContain("+66");
+    expect((await getCustomerBooking(customerId, res.id))?.status).toBe("cancelled");
   });
 
   it("finds the earliest slot on the next working day", async () => {

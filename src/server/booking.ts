@@ -1,6 +1,6 @@
 import "server-only";
 import { randomInt } from "node:crypto";
-import { and, asc, eq, gt, inArray, lt, ne } from "drizzle-orm";
+import { and, asc, eq, gt, inArray, lt, ne, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { appointments, services, staff, staffServices, timeOff, workingHours } from "@/db/schema";
 import {
@@ -95,14 +95,28 @@ function isPgError(e: unknown, code: string): boolean {
   return err?.code === code || err?.cause?.code === code;
 }
 
+/** Upcoming confirmed bookings one customer may hold, so nobody can block the calendar. */
+export const MAX_UPCOMING_BOOKINGS = 5;
+
 export type CreateBookingResult =
   | { ok: true; id: string; ref: string }
-  | { ok: false; error: "service_unavailable" | "slot_taken" };
+  | { ok: false; error: "service_unavailable" | "slot_taken" | "too_many" | "not_changeable" };
+
+async function countUpcoming(customerId: string, now: Date): Promise<number> {
+  const [{ count }] = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(appointments)
+    .where(and(eq(appointments.customerId, customerId), eq(appointments.status, "confirmed"), gt(appointments.startsAt, now)));
+  return count;
+}
 
 /**
  * Books a slot. With `staffId` null ("any practitioner") it tries every free
  * practitioner in turn. The database exclusion constraint is the final guard
  * against two people booking the same practitioner at once.
+ *
+ * With `replaceId` this is a change of time: the new booking is made first and
+ * the old one cancelled after, so the customer never ends up with neither.
  */
 export async function createBooking(input: {
   customerId: string;
@@ -110,11 +124,19 @@ export async function createBooking(input: {
   staffId: number | null;
   startsAt: Date;
   locale: string;
+  replaceId?: string;
   now?: Date;
 }): Promise<CreateBookingResult> {
   const now = input.now ?? new Date();
   const svc = await getActiveService(input.serviceId);
   if (!svc) return { ok: false, error: "service_unavailable" };
+
+  if (input.replaceId) {
+    const old = await getCustomerBooking(input.customerId, input.replaceId);
+    if (!old || old.status !== "confirmed" || old.startsAt <= now) return { ok: false, error: "not_changeable" };
+  } else if ((await countUpcoming(input.customerId, now)) >= MAX_UPCOMING_BOOKINGS) {
+    return { ok: false, error: "too_many" };
+  }
 
   const date = localDateString(input.startsAt);
   const slot = (await getDaySlots(svc.id, date, input.staffId, now)).find(
@@ -139,6 +161,11 @@ export async function createBooking(input: {
             locale: input.locale,
           })
           .returning({ id: appointments.id, ref: appointments.ref });
+        if (input.replaceId && !(await cancelCustomerBooking(input.customerId, input.replaceId, now))) {
+          // The old booking changed meanwhile (e.g. cancelled by the clinic): undo the new one.
+          await db.update(appointments).set({ status: "cancelled" }).where(eq(appointments.id, row.id));
+          return { ok: false, error: "not_changeable" };
+        }
         return { ok: true, ...row };
       } catch (e) {
         if (isPgError(e, "23P01")) break; // practitioner just got booked; try the next one
@@ -150,19 +177,24 @@ export async function createBooking(input: {
   return { ok: false, error: "slot_taken" };
 }
 
-/** A customer's bookings, newest first, with service and practitioner names. */
+const bookingColumns = {
+  id: appointments.id,
+  ref: appointments.ref,
+  startsAt: appointments.startsAt,
+  endsAt: appointments.endsAt,
+  status: appointments.status,
+  priceThb: appointments.priceThb,
+  serviceId: appointments.serviceId,
+  serviceName: services.name,
+  staffName: staff.name,
+};
+
+export type CustomerBooking = Awaited<ReturnType<typeof listCustomerBookings>>[number];
+
+/** A customer's bookings, oldest first, with service and practitioner names. */
 export async function listCustomerBookings(customerId: string) {
   return db
-    .select({
-      id: appointments.id,
-      ref: appointments.ref,
-      startsAt: appointments.startsAt,
-      endsAt: appointments.endsAt,
-      status: appointments.status,
-      priceThb: appointments.priceThb,
-      serviceName: services.name,
-      staffName: staff.name,
-    })
+    .select(bookingColumns)
     .from(appointments)
     .innerJoin(services, eq(services.id, appointments.serviceId))
     .innerJoin(staff, eq(staff.id, appointments.staffId))
@@ -171,8 +203,13 @@ export async function listCustomerBookings(customerId: string) {
 }
 
 export async function getCustomerBooking(customerId: string, id: string) {
-  const rows = await listCustomerBookings(customerId);
-  return rows.find((r) => r.id === id) ?? null;
+  const [row] = await db
+    .select(bookingColumns)
+    .from(appointments)
+    .innerJoin(services, eq(services.id, appointments.serviceId))
+    .innerJoin(staff, eq(staff.id, appointments.staffId))
+    .where(and(eq(appointments.id, id), eq(appointments.customerId, customerId)));
+  return row ?? null;
 }
 
 /** Customers can cancel their own confirmed bookings that have not started yet. */

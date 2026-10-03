@@ -61,8 +61,3 @@ export async function listThreads() {
     .orderBy(desc(chatThreads.lastMessageAt))
     .limit(100);
 }
-
-export async function unreadThreadCount(): Promise<number> {
-  const rows = await listThreads();
-  return rows.filter((r) => r.unread).length;
-}

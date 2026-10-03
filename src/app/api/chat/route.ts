@@ -1,11 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
-import { currentCustomerId } from "@/lib/session";
+import { currentCustomer } from "@/server/customer";
 import { listMessages, markRead, MAX_MESSAGE_LENGTH, sendMessage } from "@/server/chat";
 
 /** GET /api/chat?after=<id>: the signed-in customer's new messages. */
 export async function GET(req: NextRequest) {
-  const customerId = await currentCustomerId();
+  const customerId = (await currentCustomer())?.id;
   if (!customerId) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const after = Number(req.nextUrl.searchParams.get("after") ?? 0) || 0;
   const messages = await listMessages(customerId, after);
@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
 const Body = z.object({ body: z.string().min(1).max(MAX_MESSAGE_LENGTH) });
 
 export async function POST(req: Request) {
-  const customerId = await currentCustomerId();
+  const customerId = (await currentCustomer())?.id;
   if (!customerId) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "bad_request" }, { status: 400 });

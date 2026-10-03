@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { currentCustomer } from "@/server/customer";
 import { locales } from "@/i18n/config";
-import { currentCustomerId } from "@/lib/session";
 import { createBooking } from "@/server/booking";
 
 const Body = z.object({
@@ -9,10 +9,11 @@ const Body = z.object({
   staffId: z.number().int().positive().nullable(),
   startsAt: z.iso.datetime(),
   locale: z.enum(locales),
+  replaceId: z.uuid().optional(),
 });
 
 export async function POST(req: Request) {
-  const customerId = await currentCustomerId();
+  const customerId = (await currentCustomer())?.id;
   if (!customerId) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const parsed = Body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "bad_request" }, { status: 400 });

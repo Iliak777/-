@@ -5,7 +5,7 @@ import { Logo } from "@/components/logo";
 import { pageI18n } from "@/i18n/server";
 import { currentAdminId } from "@/lib/session";
 import { adminLogout } from "@/server/admin-actions";
-import { unreadThreadCount } from "@/server/chat";
+import { unreadThreadCount } from "@/server/admin-queries";
 
 export default async function AdminLayout({ children, params }: LayoutProps<"/[locale]/admin">) {
   await connection();
@@ -28,7 +28,7 @@ export default async function AdminLayout({ children, params }: LayoutProps<"/[l
             {links.map((l) => (
               <Link key={l.href} href={l.href} className="hover:text-gold-dark">
                 {l.label}
-                {!!l.badge && <span className="ml-1 rounded-full bg-gold px-1.5 text-xs text-paper">{l.badge}</span>}
+                {!!l.badge && <span className="ml-1 rounded-full bg-gold px-1.5 text-xs text-noir">{l.badge}</span>}
               </Link>
             ))}
           </nav>

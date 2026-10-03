@@ -18,5 +18,5 @@ export async function POST(req: Request) {
   const res = await verifyOtp(phone, parsed.data.code, parsed.data.name);
   if (!res.ok) return NextResponse.json({ error: res.error }, { status: 400 });
   await startSession("customer", res.customerId);
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, name: res.name });
 }
