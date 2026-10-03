@@ -15,6 +15,13 @@
       "when": 1791033376563,
       "tag": "0001_no_double_booking",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791050400000,
+      "tag": "0002_enable_rls",
+      "breakpoints": true
     }
   ]
 }
