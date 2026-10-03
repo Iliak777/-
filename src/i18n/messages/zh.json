@@ -12,19 +12,38 @@
     "today": "今天",
     "tomorrow": "明天",
     "language": "语言",
-    "address": "曼谷暹罗广场 7 巷"
+    "address": "曼谷暹罗广场 7 巷",
+    "close": "关闭",
+    "retry": "重试",
+    "clear": "清除",
+    "offline": "网络已断开，恢复后将自动重新连接。",
+    "errorTitle": "出了点问题",
+    "loadFailed": "无法加载可预约时间。",
+    "notFound": "页面不存在",
+    "notFoundText": "该页面不存在或已不可用。",
+    "toTreatments": "浏览项目"
   },
   "nav": {
     "treatments": "项目",
     "myBookings": "我的预约",
     "chat": "咨询",
-    "signOut": "退出登录"
+    "signOut": "退出登录",
+    "label": "主菜单"
   },
   "home": {
     "heroTitle": "几秒钟完成预约",
     "heroSubtitle": "选择项目，预约最早的空档，或自选时间。",
-    "chatCta": "不确定适合哪个项目？咨询我们的顾问",
-    "all": "全部"
+    "chatCta": "咨询我们的顾问，营业时间内回复。",
+    "all": "全部",
+    "hello": "{name}，您好",
+    "whatToday": "今天想预约什么？",
+    "nextVisit": "您的下次预约",
+    "bookAgain": "再次预约",
+    "chatTitle": "不确定适合哪个项目？",
+    "search": "搜索项目",
+    "categories": "分类",
+    "noResults": "未找到项目",
+    "noResultsHint": "换个关键词试试，或咨询我们的顾问。"
   },
   "book": {
     "earliestTitle": "最早可约时间",
@@ -39,7 +58,19 @@
     "confirmButton": "确认预约",
     "bookingAs": "预约人：{name}",
     "slotTaken": "抱歉，该时间刚被预约，请选择其他时间。",
-    "payAtClinic": "现在无需付款，到店支付。"
+    "payAtClinic": "现在无需付款，到店支付。",
+    "tooMany": "您已有 5 个待进行的预约。请先取消一个或联系我们。",
+    "notChangeable": "该预约已无法更改，请查看“我的预约”。",
+    "changingFrom": "正在更改预约 {ref}（{when}），请在下方选择新时间。",
+    "changeTitle": "更改预约",
+    "changeButton": "改到这个时间",
+    "day": "日期",
+    "jumpTo": "最近可约：{day}",
+    "periods": {
+      "morning": "上午",
+      "afternoon": "下午",
+      "evening": "晚上"
+    }
   },
   "auth": {
     "title": "验证手机号",
@@ -58,7 +89,9 @@
     "expired": "验证码已过期，请重新获取。",
     "rate_limited": "请求过于频繁，请 15 分钟后再试。",
     "name_required": "请输入您的姓名。",
-    "devCode": "演示模式，您的验证码是 {code}"
+    "devCode": "演示模式，您的验证码是 {code}",
+    "resend": "重新发送验证码",
+    "resendIn": "{s} 秒后可重新发送"
   },
   "confirmation": {
     "title": "预约成功！",
@@ -70,7 +103,15 @@
     "price": "价格",
     "where": "地址",
     "viewBookings": "查看我的预约",
-    "bookAnother": "预约其他项目"
+    "bookAnother": "预约其他项目",
+    "changedTitle": "预约已更改",
+    "details": "预约详情",
+    "addToCalendar": "加入日历",
+    "directions": "导航",
+    "share": "分享",
+    "changeTime": "更改时间",
+    "shareText": "我在 THE KLINIQUE 的预约：{service}，{when}。预约号 {ref}。{address}",
+    "copied": "已复制"
   },
   "me": {
     "title": "我的预约",
@@ -84,7 +125,20 @@
       "cancelled": "已取消",
       "completed": "已完成",
       "no_show": "未到店"
-    }
+    },
+    "signInIntro": "用手机号登录，查看和管理您的预约。",
+    "noneHint": "只需几步即可预约您的第一个项目。",
+    "notCancellable": "该预约已无法取消。",
+    "cancelled": "预约已取消",
+    "cancelYes": "确认取消预约",
+    "keepBooking": "保留预约",
+    "account": "账户",
+    "signedOut": "已退出登录",
+    "deleteAccount": "删除账户",
+    "deleteConfirm": "确定删除您的账户？",
+    "deleteExplain": "您的姓名、手机号和聊天记录将被删除，待进行的预约将被取消。此操作无法撤销。",
+    "deleteYes": "删除我的账户",
+    "deleted": "您的账户已删除"
   },
   "chat": {
     "title": "在线咨询",
@@ -92,8 +146,11 @@
     "placeholder": "输入消息…",
     "send": "发送",
     "empty": "打个招呼，告诉我们您想改善什么。",
-    "you": "您",
-    "clinic": "THE KLINIQUE"
+    "clinic": "THE KLINIQUE",
+    "signInIntro": "用手机号登录，以便顾问回复您。",
+    "yesterday": "昨天",
+    "sending": "发送中…",
+    "failed": "发送失败，点击重试"
   },
   "admin": {
     "title": "诊所管理",
@@ -155,7 +212,41 @@
       "to": "到",
       "note": "备注",
       "remove": "删除",
-      "weekdays": ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
+      "weekdays": [
+        "星期日",
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六"
+      ]
     }
+  },
+  "privacy": {
+    "title": "隐私",
+    "intro": "THE KLINIQUE 只保留预约和服务所需的信息。",
+    "sections": [
+      {
+        "heading": "我们收集的信息",
+        "body": "您的姓名、手机号、预约记录以及与顾问的聊天消息。我们不会索取其他信息。"
+      },
+      {
+        "heading": "用途",
+        "body": "通过短信验证码确认您的身份、管理您的预约并回答您的问题。我们不会出售您的数据，也不会用于广告。"
+      },
+      {
+        "heading": "如何保护",
+        "body": "数据通过加密连接传输。短信验证码仅以不可还原的形式保存，5 分钟后失效。只有诊所工作人员能看到您的预约和消息。"
+      },
+      {
+        "heading": "您的权利",
+        "body": "您可以随时在“我的预约”中删除账户，届时您的姓名、手机号和聊天记录将被删除。按照医疗记录要求，过往就诊记录会保留在诊所档案中，但不含您的个人信息。"
+      },
+      {
+        "heading": "联系我们",
+        "body": "对您的数据有疑问？请在咨询聊天中留言，或到访曼谷暹罗广场 7 巷。"
+      }
+    ]
   }
 }

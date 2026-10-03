@@ -3,11 +3,13 @@ import { notFound } from "next/navigation";
 import { Cormorant_Garamond, Montserrat, Noto_Sans_Thai } from "next/font/google";
 import { getDictionary, hasLocale, locales } from "@/i18n/config";
 import { I18nProvider } from "@/components/i18n-provider";
+import { ToastProvider } from "@/components/toast";
 import "../globals.css";
 
 const body = Montserrat({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 const serif = Cormorant_Garamond({ subsets: ["latin"], weight: ["500", "600"], variable: "--font-serif", display: "swap" });
-const thai = Noto_Sans_Thai({ subsets: ["thai"], variable: "--font-thai", display: "swap" });
+// Not preloaded: the browser fetches it only when a page actually contains Thai text.
+const thai = Noto_Sans_Thai({ subsets: ["thai"], variable: "--font-thai", display: "swap", preload: false });
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -25,7 +27,10 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
 }
 
 export const viewport: Viewport = {
-  themeColor: "#161412",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#1c1a17" },
+  ],
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -38,7 +43,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
     <html lang={locale} className={`${body.variable} ${serif.variable} ${thai.variable} h-full antialiased`}>
       <body className="min-h-full font-sans">
         <I18nProvider locale={locale} dict={getDictionary(locale)}>
-          {children}
+          <ToastProvider>{children}</ToastProvider>
         </I18nProvider>
       </body>
     </html>

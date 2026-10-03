@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
-/* Brand tokens, modelled on thekliniquethailand.com: black, white and gold. */
+/*
+ * Brand tokens, modelled on thekliniquethailand.com: black, white and gold.
+ * `ink` is the main text colour and `paper` the card colour; dark mode swaps
+ * them, so components use the tokens and get both themes for free.
+ * `noir` stays black in both themes (hero, brand moments).
+ */
 :root {
   --ink: #161412;
   --paper: #ffffff;
   --cream: #f8f5ef;
+  --noir: #161412;
   --gold: #b08d57;
   --gold-dark: #8a6a3a;
+  --gold-soft: #f3ebdd;
   --line: #e8e1d5;
   --muted: #6f6a62;
   --danger: #b3261e;
+  --success: #2f6b4f;
+  --on-danger: #ffffff;
+  --header-h: 3.5rem;
+  --nav-h: calc(3.5rem + env(safe-area-inset-bottom));
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #f2ede4;
+    --paper: #1c1a17;
+    --cream: #11100e;
+    --noir: #000000;
+    --gold: #c6a36c;
+    --gold-dark: #d5b886;
+    --gold-soft: #2a2419;
+    --line: #2f2b26;
+    --muted: #a39c91;
+    --danger: #f2877f;
+    --success: #7fc6a1;
+    --on-danger: #1c1a17;
+    color-scheme: dark;
+  }
 }
 
 @theme inline {
   --color-ink: var(--ink);
   --color-paper: var(--paper);
   --color-cream: var(--cream);
+  --color-noir: var(--noir);
   --color-gold: var(--gold);
   --color-gold-dark: var(--gold-dark);
+  --color-gold-soft: var(--gold-soft);
   --color-line: var(--line);
   --color-muted: var(--muted);
   --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-on-danger: var(--on-danger);
   --font-sans: var(--font-body), var(--font-thai), "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
   --font-display: var(--font-serif), var(--font-thai), "Songti SC", serif;
 }
@@ -29,33 +63,141 @@ body {
   background: var(--cream);
   color: var(--ink);
   -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
 }
 
-/* Spaced uppercase labels, like the website's navigation. */
-.eyebrow {
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
 
-.btn-primary {
-  @apply inline-flex items-center justify-center rounded-full bg-ink px-6 py-3.5 text-sm font-medium tracking-wide text-paper transition active:scale-[0.98] disabled:opacity-50;
-}
-.btn-gold {
-  @apply inline-flex items-center justify-center rounded-full bg-gold px-6 py-3.5 text-sm font-medium tracking-wide text-paper transition hover:bg-gold-dark active:scale-[0.98] disabled:opacity-50;
-}
-.btn-ghost {
-  @apply inline-flex items-center justify-center rounded-full border border-line bg-paper px-5 py-3 text-sm text-ink transition hover:border-gold active:scale-[0.98] disabled:opacity-50;
-}
-.input {
-  @apply w-full rounded-xl border border-line bg-paper px-4 py-3 text-base outline-none focus:border-gold;
-}
-.card {
-  @apply rounded-2xl border border-line bg-paper;
+/* Buttons: at least 44pt tall (Apple's minimum touch target). */
+@utility btn {
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium tracking-wide transition select-none active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
 }
 
-/* Wide letter-spacing breaks Thai and Chinese scripts. */
-:lang(th) .eyebrow,
-:lang(zh) .eyebrow {
-  letter-spacing: 0.04em;
+/* Component classes live in a layer so utilities (e.g. "pl-11") can still override them. */
+@layer components {
+  /* Spaced uppercase labels, like the website's navigation. */
+  .eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .btn-primary {
+    @apply btn bg-ink text-paper;
+  }
+  /* Dark text on gold: white on this gold fails contrast (3:1). */
+  .btn-gold {
+    @apply btn bg-gold text-noir hover:brightness-105;
+  }
+  .btn-ghost {
+    @apply btn border border-line bg-paper px-5 text-ink hover:border-gold;
+  }
+  .btn-danger {
+    @apply btn bg-danger text-on-danger;
+  }
+  /* Text-only button with a full-size touch area. */
+  .btn-link {
+    @apply inline-flex min-h-11 items-center gap-1.5 text-sm text-gold-dark transition active:opacity-60;
+  }
+  .input {
+    @apply w-full rounded-xl border border-line bg-paper px-4 py-3 text-base text-ink outline-none transition placeholder:text-muted/70 focus:border-gold focus:ring-2 focus:ring-gold/20;
+  }
+  .card {
+    @apply rounded-2xl border border-line bg-paper;
+  }
+  .chip {
+    @apply inline-flex min-h-10 shrink-0 items-center justify-center rounded-full border border-line bg-paper px-4 text-sm text-ink transition active:scale-[0.97];
+  }
+  .chip[aria-pressed="true"] {
+    @apply border-ink bg-ink text-paper;
+  }
+  /* The search field has its own clear button. */
+  input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Wide letter-spacing breaks Thai and Chinese scripts. */
+  :lang(th) .eyebrow,
+  :lang(zh) .eyebrow {
+    letter-spacing: 0.04em;
+  }
+}
+
+/* Motion: short and subtle; switched off for people who ask for less motion. */
+/* Opacity only, and no fill afterwards: a transform here would break position: fixed inside pages. */
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+}
+@keyframes check-in {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+.animate-page {
+  animation: page-in 0.25s ease-out backwards;
+}
+.animate-fade {
+  animation: fade-in 0.2s ease-out both;
+}
+.animate-sheet {
+  animation: sheet-in 0.32s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+.animate-pop {
+  animation: pop-in 0.22s ease-out both;
+}
+.animate-check {
+  animation: check-in 0.5s ease-out both;
+}
+.skeleton {
+  border-radius: 0.75rem;
+  background: linear-gradient(90deg, var(--line) 25%, color-mix(in srgb, var(--line) 50%, var(--paper)) 50%, var(--line) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

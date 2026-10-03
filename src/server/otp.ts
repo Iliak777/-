@@ -39,7 +39,7 @@ export async function requestOtp(phone: string, now = new Date()): Promise<Reque
 }
 
 export type VerifyOtpResult =
-  | { ok: true; customerId: string; isNew: boolean }
+  | { ok: true; customerId: string; name: string; isNew: boolean }
   | { ok: false; error: "invalid_code" | "expired" | "name_required" };
 
 /**
@@ -66,12 +66,12 @@ export async function verifyOtp(phone: string, code: string, name: string | unde
   if (!existing && !name?.trim()) return { ok: false, error: "name_required" };
 
   await db.update(otpCodes).set({ consumedAt: now }).where(eq(otpCodes.id, otp.id));
-  if (existing) return { ok: true, customerId: existing.id, isNew: false };
+  if (existing) return { ok: true, customerId: existing.id, name: existing.name, isNew: false };
 
   const [created] = await db
     .insert(customers)
     .values({ phone, name: name!.trim().slice(0, 80) })
     .onConflictDoUpdate({ target: customers.phone, set: { phone } })
     .returning();
-  return { ok: true, customerId: created.id, isNew: true };
+  return { ok: true, customerId: created.id, name: created.name, isNew: true };
 }

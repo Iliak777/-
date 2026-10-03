@@ -11,14 +11,27 @@ treatments, practitioners and chats from a simple admin.
 
 ## Customer flow
 
-1. Open the app (link or QR). The language follows the phone, switchable at the top.
-2. Tap a treatment. The **Earliest available** card shows the soonest time and practitioner.
-3. Tap **Book this time** (or pick a day, time, or practitioner).
-4. First time only: enter mobile number, the SMS code, and a name. Booking is created right after.
-5. Confirmation with a booking reference. **My bookings** lists and cancels bookings.
-6. **Consult** opens a chat with the clinic.
+1. Open the app (link or QR). The language follows the phone, switchable at the top (globe).
+2. Find a treatment: search, filter by category, or (returning customers) tap **Book again**.
+3. The **Earliest available** card shows the soonest time; **Book this time** opens a confirmation sheet.
+   Or pick a practitioner, a day and a time (grouped into morning, afternoon, evening).
+4. First time only: mobile number, the SMS code (submits itself on the 6th digit), and a name. Booking is created right after.
+5. Confirmation with a booking reference, **Add to calendar** (.ics), **Directions** and **Share**.
+6. **My bookings**: booking details, **Change time** (moves the booking in one step), cancel, sign out,
+   privacy notice and **Delete account**.
+7. **Consult** opens a chat with the clinic.
 
 A returning customer books in 3 taps: treatment, *Book this time*, *Confirm*.
+
+## Design system
+
+- Tokens in `src/app/globals.css` (`ink`, `paper`, `cream`, `gold`, ...). Dark mode follows the phone and
+  only redefines the tokens; `noir` stays black in both themes.
+- Shared pieces in `src/components/`: `icons.tsx` (one inline icon set), `sheet.tsx` (iOS-style bottom
+  sheet for confirmations), `toast.tsx` (feedback after actions), `states.tsx` (empty, loading, error).
+- Every customer screen has a loading skeleton (`loading.tsx`), an error screen with retry (`error.tsx`)
+  and a not-found screen. An offline banner appears when the connection drops (Next.js `useOffline`).
+- Mobile: 44pt touch targets, safe areas, 16px inputs (no iOS zoom), the chat follows the keyboard.
 
 ## Tech stack and why
 
@@ -61,7 +74,8 @@ npm run typecheck
 Integration tests use `TEST_DATABASE_URL` (default `postgres://klinique:klinique@localhost:5432/klinique_test`),
 which must be migrated once: `DATABASE_URL=<test url> npx tsx scripts/migrate.ts`.
 They cover the availability engine, booking (including 5 simultaneous bookings of one slot, only one wins),
-cancellation, OTP (wrong code, single use, lockout, rate limit) and translation completeness.
+cancellation, changing a booking's time, the per-customer booking cap, account deletion, OTP (wrong code,
+single use, lockout, rate limit), the calendar file and translation completeness.
 
 ## Project layout
 
@@ -79,6 +93,10 @@ scripts/                   migrate and seed
 ## Data and privacy
 
 We store only what booking needs: customer name, phone number, their appointments and chat messages.
+Customers can delete their account in the app (required by the App Store and in line with Thailand's PDPA):
+name, phone and chat are erased, upcoming bookings cancelled, and past appointments kept without personal data.
+A customer can hold at most 5 upcoming bookings, so nobody can block the calendar. Admin data is checked
+for an admin session in the data layer, not only in the admin layout.
 No secrets are committed: configuration comes from environment variables (`.env.example` lists them).
 Admin passwords are hashed with scrypt.
 
@@ -94,13 +112,18 @@ Admin passwords are hashed with scrypt.
 
 ## Next steps
 
-1. **Real SMS provider** for OTP codes and booking confirmations/reminders (for Thailand: ThaiBulkSMS or Twilio). Plug it in `src/lib/sms.ts`.
-2. **LINE notifications** (LINE Messaging API) for confirmations and reminders, and LINE login as an alternative to SMS.
-3. **Payments** (next stage): PromptPay QR and cards via Omise (Opn) or Stripe, deposits for high-value treatments.
-4. **Real logo, brand colors and photos** from the clinic (the website could not be downloaded directly; colors and fonts are close approximations in `globals.css`).
-5. **Real durations and prices** per treatment (the website lists none; durations are estimates, prices show "on consultation"). Editable in admin.
-6. Native-speaker review of the Thai and Chinese texts.
-7. Admin: create bookings for phone or walk-in customers, edit categories, multiple admin accounts, login rate limiting.
-8. Chat: push notifications to staff on new messages, image attachments, switch polling to realtime.
-9. Booking rules editable in admin (slot step, minimum notice, cancellation window), currently constants in `src/lib/availability.ts`.
-10. End-to-end browser tests in CI.
+1. **Before real customers: turn off `OTP_DEV_ECHO`.** While it is on, the SMS code is shown on screen,
+   so anyone could sign in with someone else's number. Needs a real SMS provider first (step 2).
+2. **Real SMS provider** for OTP codes and booking confirmations/reminders (for Thailand: ThaiBulkSMS or Twilio). Plug it in `src/lib/sms.ts`.
+3. **Run Vercel functions in Tokyo (`hnd1`)**, next to the Supabase database. The default region is in the US,
+   so every database query crosses the Pacific; this is the largest speed gain available.
+4. **Reminders** by SMS or LINE the day before (LINE Messaging API), and LINE login as an alternative to SMS.
+5. **Payments** (next stage): PromptPay QR and cards via Omise (Opn) or Stripe, deposits for high-value treatments.
+6. **Abuse limits**: admin login rate limiting, and a per-IP limit on SMS code requests (SMS cost).
+7. **Real logo, brand colors and photos** from the clinic (colors and fonts are close approximations in `globals.css`).
+8. **Real durations and prices** per treatment (durations are estimates, prices show "on consultation"). Editable in admin.
+9. Native-speaker review of the Thai and Chinese texts, and legal review of the privacy notice (`privacy` in `src/i18n/messages`).
+10. Admin: create bookings for phone or walk-in customers, simple statistics (bookings, cancellations, popular treatments), multiple admin accounts.
+11. Chat: push notifications to staff on new messages, image attachments, switch polling to realtime.
+12. Booking rules editable in admin (slot step, minimum notice, cancellation window, booking cap).
+13. End-to-end browser tests in CI.

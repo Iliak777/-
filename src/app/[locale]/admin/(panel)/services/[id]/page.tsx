@@ -1,17 +1,15 @@
 import { notFound } from "next/navigation";
-import { eq } from "drizzle-orm";
-import { db } from "@/db";
-import { services } from "@/db/schema";
 import { localized } from "@/i18n/config";
 import { pageI18n } from "@/i18n/server";
 import { saveService } from "@/server/admin-actions";
+import { serviceById } from "@/server/admin-queries";
 import { listCategories } from "@/server/catalog";
 
 export default async function ServiceEditPage({ params }: PageProps<"/[locale]/admin/services/[id]">) {
   const { locale, dict } = await pageI18n(params);
   const { id } = await params;
   const isNew = id === "new";
-  const [svc] = isNew ? [undefined] : await db.select().from(services).where(eq(services.id, Number(id) || 0));
+  const svc = isNew ? undefined : await serviceById(Number(id) || 0);
   if (!isNew && !svc) notFound();
   const cats = await listCategories();
   const t = dict.admin.services;

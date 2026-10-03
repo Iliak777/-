@@ -12,19 +12,38 @@
     "today": "Today",
     "tomorrow": "Tomorrow",
     "language": "Language",
-    "address": "Siam Square Soi 7, Bangkok"
+    "address": "Siam Square Soi 7, Bangkok",
+    "close": "Close",
+    "retry": "Try again",
+    "clear": "Clear",
+    "offline": "You're offline. We'll reconnect automatically.",
+    "errorTitle": "Something went wrong",
+    "loadFailed": "Couldn't load times.",
+    "notFound": "Page not found",
+    "notFoundText": "This page doesn't exist or is no longer available.",
+    "toTreatments": "Browse treatments"
   },
   "nav": {
     "treatments": "Treatments",
     "myBookings": "My bookings",
     "chat": "Consult",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "label": "Main"
   },
   "home": {
     "heroTitle": "Your treatment, booked in seconds",
     "heroSubtitle": "Pick a treatment and take the earliest free time, or choose your own.",
-    "chatCta": "Not sure what you need? Ask our consultant",
-    "all": "All"
+    "chatCta": "Ask our consultant, we reply during clinic hours.",
+    "all": "All",
+    "hello": "Hello, {name}",
+    "whatToday": "What would you like to book?",
+    "nextVisit": "Your next visit",
+    "bookAgain": "Book again",
+    "chatTitle": "Not sure what you need?",
+    "search": "Search treatments",
+    "categories": "Categories",
+    "noResults": "No treatments found",
+    "noResultsHint": "Try another word, or ask our consultant."
   },
   "book": {
     "earliestTitle": "Earliest available",
@@ -39,7 +58,19 @@
     "confirmButton": "Confirm booking",
     "bookingAs": "Booking as {name}",
     "slotTaken": "Sorry, that time was just taken. Please pick another.",
-    "payAtClinic": "No payment now. You pay at the clinic."
+    "payAtClinic": "No payment now. You pay at the clinic.",
+    "tooMany": "You already have 5 upcoming bookings. Please cancel one or contact us.",
+    "notChangeable": "This booking can no longer be changed. Please check My bookings.",
+    "changingFrom": "Changing booking {ref} ({when}). Pick a new time below.",
+    "changeTitle": "Change your booking",
+    "changeButton": "Move my booking here",
+    "day": "Day",
+    "jumpTo": "Next free day: {day}",
+    "periods": {
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "evening": "Evening"
+    }
   },
   "auth": {
     "title": "Verify your phone",
@@ -58,7 +89,9 @@
     "expired": "The code has expired. Please request a new one.",
     "rate_limited": "Too many codes requested. Please wait 15 minutes.",
     "name_required": "Please enter your name.",
-    "devCode": "Demo mode, your code is {code}"
+    "devCode": "Demo mode, your code is {code}",
+    "resend": "Resend code",
+    "resendIn": "Resend code in {s}s"
   },
   "confirmation": {
     "title": "You're booked!",
@@ -70,7 +103,15 @@
     "price": "Price",
     "where": "Where",
     "viewBookings": "View my bookings",
-    "bookAnother": "Book another treatment"
+    "bookAnother": "Book another treatment",
+    "changedTitle": "Booking changed",
+    "details": "Booking details",
+    "addToCalendar": "Calendar",
+    "directions": "Directions",
+    "share": "Share",
+    "changeTime": "Change time",
+    "shareText": "My appointment at THE KLINIQUE: {service}, {when}. Booking {ref}. {address}",
+    "copied": "Copied to clipboard"
   },
   "me": {
     "title": "My bookings",
@@ -84,7 +125,20 @@
       "cancelled": "Cancelled",
       "completed": "Completed",
       "no_show": "Missed"
-    }
+    },
+    "signInIntro": "Sign in with your phone to see and manage your bookings.",
+    "noneHint": "Book your first treatment in a few taps.",
+    "notCancellable": "This booking can no longer be cancelled.",
+    "cancelled": "Booking cancelled",
+    "cancelYes": "Yes, cancel booking",
+    "keepBooking": "Keep booking",
+    "account": "Account",
+    "signedOut": "You're signed out",
+    "deleteAccount": "Delete account",
+    "deleteConfirm": "Delete your account?",
+    "deleteExplain": "Your name, phone number and chat are deleted, and upcoming bookings are cancelled. This cannot be undone.",
+    "deleteYes": "Delete my account",
+    "deleted": "Your account was deleted"
   },
   "chat": {
     "title": "Consult with us",
@@ -92,8 +146,11 @@
     "placeholder": "Type your message…",
     "send": "Send",
     "empty": "Say hello and tell us what you would like to improve.",
-    "you": "You",
-    "clinic": "THE KLINIQUE"
+    "clinic": "THE KLINIQUE",
+    "signInIntro": "Sign in with your phone so our consultant can reply to you.",
+    "yesterday": "Yesterday",
+    "sending": "Sending…",
+    "failed": "Not sent. Tap to retry"
   },
   "admin": {
     "title": "Clinic admin",
@@ -155,7 +212,41 @@
       "to": "To",
       "note": "Note",
       "remove": "Remove",
-      "weekdays": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+      "weekdays": [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ]
     }
+  },
+  "privacy": {
+    "title": "Privacy",
+    "intro": "THE KLINIQUE keeps only the information needed to book and look after your appointments.",
+    "sections": [
+      {
+        "heading": "What we collect",
+        "body": "Your name, your mobile number, your bookings and your chat messages with our consultants. We do not ask for anything else."
+      },
+      {
+        "heading": "Why",
+        "body": "To confirm your identity with an SMS code, to manage your appointments, and to answer your questions. We do not sell your data or use it for advertising."
+      },
+      {
+        "heading": "How it is protected",
+        "body": "Data is sent over encrypted connections. SMS codes are stored only in scrambled form and expire after 5 minutes. Only clinic staff can see your bookings and messages."
+      },
+      {
+        "heading": "Your choices",
+        "body": "You can delete your account at any time in My bookings. Your name, phone number and chat are then deleted. Past visits stay in the clinic's records without your personal details, as required for medical records."
+      },
+      {
+        "heading": "Contact",
+        "body": "Questions about your data? Write to us in the Consult chat or visit us at Siam Square Soi 7, Bangkok."
+      }
+    ]
   }
 }

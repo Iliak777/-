@@ -3,13 +3,13 @@ import { z } from "zod";
 import { formatDateTime } from "@/i18n/format";
 import { pageI18n } from "@/i18n/server";
 import { ChatWindow } from "@/components/chat-window";
-import { listThreads } from "@/server/chat";
+import { inboxThreads } from "@/server/admin-queries";
 
 export default async function InboxPage({ params, searchParams }: PageProps<"/[locale]/admin/inbox">) {
   const { locale, dict } = await pageI18n(params);
   const c = (await searchParams).c;
   const selected = typeof c === "string" && z.uuid().safeParse(c).success ? c : null;
-  const threads = await listThreads();
+  const threads = await inboxThreads();
   const current = threads.find((t) => t.customerId === selected);
 
   return (
@@ -24,7 +24,7 @@ export default async function InboxPage({ params, searchParams }: PageProps<"/[l
             >
               <div className="flex justify-between gap-2">
                 <span className="font-medium">{t.customerName}</span>
-                {t.unread && <span className="rounded-full bg-gold px-2 text-xs text-paper">{dict.admin.inbox.unread}</span>}
+                {t.unread && <span className="rounded-full bg-gold px-2 text-xs text-noir">{dict.admin.inbox.unread}</span>}
               </div>
               <p className="text-muted">{t.phone}</p>
               <p className="text-xs text-muted">{formatDateTime(t.lastMessageAt, locale)}</p>
