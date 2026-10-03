@@ -12,6 +12,10 @@ async function main() {
 }
 
 main().catch((e) => {
-  console.error(e);
-  process.exit(1);
+  // Print a readable message and let the process exit on its own, so piped
+  // build logs are not cut off before the error is written.
+  const cause = (e as { cause?: { message?: string; code?: string } })?.cause;
+  console.error(`FAILED: ${e instanceof Error ? e.message : String(e)}`);
+  if (cause) console.error(`CAUSE: ${cause.code ?? ""} ${cause.message ?? ""}`);
+  process.exitCode = 1;
 });
