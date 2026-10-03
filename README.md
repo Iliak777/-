@@ -82,11 +82,15 @@ We store only what booking needs: customer name, phone number, their appointment
 No secrets are committed: configuration comes from environment variables (`.env.example` lists them).
 Admin passwords are hashed with scrypt.
 
-## Deploying
+## Deploying (Vercel + Supabase)
 
-Any Node host works. Suggested: **Vercel** (app) + **Supabase** (Postgres, Singapore region for low latency to Bangkok).
-Set the variables from `.env.example` in the host, with a long random `SESSION_SECRET`,
-`OTP_DEV_ECHO=false`, and a real SMS provider (see next steps). Run `npm run db:migrate` and `npm run db:seed` once.
+1. **Supabase**: create a project (region Singapore). In *Connect*, copy the **Transaction pooler** connection string (port 6543) and put your database password in it.
+2. **Vercel**: import the GitHub repository (name the project `klinique`). Add these environment variables:
+   - `DATABASE_URL`: the pooler string from step 1
+   - `SESSION_SECRET`: a long random string (`openssl rand -base64 48`)
+   - `SMS_PROVIDER=console` and `OTP_DEV_ECHO=true` for demos only. Set `OTP_DEV_ECHO=false` once a real SMS provider is connected.
+   - `ADMIN_EMAIL`, `ADMIN_PASSWORD` (at least 10 characters): the first admin account
+3. Deploy. The `vercel-build` script applies migrations and seeds demo data on every deploy (the catalog is only seeded once; the admin password is re-synced from the variable).
 
 ## Next steps
 

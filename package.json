@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx --env-file-if-exists=.env.local scripts/migrate.ts",
-    "db:seed": "tsx --env-file-if-exists=.env.local scripts/seed.ts"
+    "db:seed": "tsx --env-file-if-exists=.env.local scripts/seed.ts",
+    "vercel-build": "tsx scripts/migrate.ts && tsx scripts/seed.ts && next build"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.3",
