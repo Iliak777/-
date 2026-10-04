@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { z } from "zod";
+import { DoctorRail } from "@/components/doctors";
 import { BackLink } from "@/components/site-chrome";
 import { Icon } from "@/components/icons";
 import { fmt, localized } from "@/i18n/config";
@@ -56,6 +57,7 @@ export default async function BookPage({ params, searchParams }: PageProps<"/[lo
         initial={{ date: initialDate, slots: initialSlots.map(toJson), earliest: earliest ? { date: earliest.date, ...toJson(earliest.slot) } : null }}
         replace={replace ? { id: replace.id, ref: replace.ref, startsAt: replace.startsAt.toISOString() } : null}
       />
+      {svc.name.en.includes("Surgery Consultation") && <DoctorRail title={dict.doctors.titleHome} consultHref={null} />}
     </div>
   );
 }
