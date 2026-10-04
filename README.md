@@ -25,7 +25,7 @@ A returning customer books in 3 taps: treatment, *Book this time*, *Confirm*.
 
 ## Design system
 
-- Identity "Silk & Halo": the clinic's black, white and gold, with the restraint of leading clinics
+- Identity "Silk & Halo" for THE KLINIQUE (the full name always stays): the clinic's black, white and gold, with the restraint of leading clinics
   (Clinique La Prairie, Ouronyx, 111 Harley St). Pearl background, Bodoni Moda headlines (Noto Serif Thai
   for Thai), Jost body text, gold hairline rules, and one signature shape: the gold halo (`.halo`), used
   only on brand moments (home hero, earliest time, confirmation). `.silk` is the black panel with a soft

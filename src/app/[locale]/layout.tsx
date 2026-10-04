@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
   return {
     title: { default: dict.common.appName, template: `%s · ${dict.common.appName}` },
     description: dict.home.heroSubtitle,
-    appleWebApp: { capable: true, title: "KLINIQUE", statusBarStyle: "default" },
+    appleWebApp: { capable: true, title: "THE KLINIQUE", statusBarStyle: "default" },
     icons: { icon: "/api/icon/32", apple: "/api/icon/180" },
   };
 }
