@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import { DoctorFaces, DoctorRail } from "@/components/doctors";
 import { Icon } from "@/components/icons";
 import { fmt, localized } from "@/i18n/config";
 import { formatDateTime } from "@/i18n/format";
@@ -39,6 +40,9 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
     .filter((b, i, all) => all.findIndex((x) => x.serviceId === b.serviceId) === i)
     .slice(0, 3);
 
+  // Surgeon profiles lead to a surgery consultation, the treatment they see patients for.
+  const consult = svcs.find((s) => s.name.en.includes("Surgery Consultation"));
+
   return (
     <div className="space-y-6">
       {customer ? (
@@ -54,6 +58,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
           <h1 className="mt-4 max-w-[16ch] font-display text-[2.1rem] leading-[1.08] font-medium text-balance">{dict.home.heroTitle}</h1>
           <hr className="rule-gold my-5 max-w-40 opacity-70" />
           <p className="max-w-[34ch] text-sm leading-relaxed text-white/70">{dict.home.heroSubtitle}</p>
+          <DoctorFaces />
         </section>
       )}
 
@@ -86,6 +91,8 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       )}
 
       <ServiceList categories={usedCats} services={items} />
+
+      <DoctorRail title={dict.doctors.titleHome} consultHref={consult ? `/${locale}/book/${consult.id}` : null} />
 
       <Link href={`/${locale}/chat`} className="card flex items-center gap-4 p-4 transition active:scale-[0.99]">
         <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-noir text-gold ring-1 ring-gold/40 ring-offset-2 ring-offset-paper">

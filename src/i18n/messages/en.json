@@ -248,5 +248,15 @@
         "body": "Questions about your data? Write to us in the Consult chat or visit us at Siam Square Soi 7, Bangkok."
       }
     ]
+  },
+  "doctors": {
+    "eyebrow": "Our team",
+    "titleHome": "Our plastic surgeons",
+    "specialty": "Plastic & reconstructive surgeon",
+    "license": "License No. {n}",
+    "book": "Book a surgery consultation",
+    "count": "{n} specialist plastic surgeons",
+    "meet": "Meet our doctors",
+    "role": "Plastic surgeon"
   }
 }
