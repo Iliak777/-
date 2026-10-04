@@ -7,7 +7,7 @@ export default async function AdminLoginPage({ params }: PageProps<"/[locale]/ad
   return (
     <main className="mx-auto max-w-sm px-4 py-16">
       <Logo />
-      <h1 className="mt-6 font-display text-3xl font-semibold">{dict.admin.title}</h1>
+      <h1 className="mt-6 font-display text-3xl font-medium">{dict.admin.title}</h1>
       <LoginForm />
     </main>
   );

@@ -39,7 +39,7 @@ export default async function BookPage({ params, searchParams }: PageProps<"/[lo
     <div className="space-y-5">
       <BackLink href={replace ? `/${locale}/booking/${replace.id}` : `/${locale}`} label={dict.common.back} />
       <div className="-mt-2">
-        <h1 className="font-display text-[2rem] leading-tight font-semibold">{name}</h1>
+        <h1 className="font-display text-[2rem] leading-tight font-medium">{name}</h1>
         <p className="mt-1 text-sm text-muted">{localized(svc.description, locale)}</p>
         <div className="mt-3 flex flex-wrap gap-2 text-xs text-gold-dark">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-gold-soft px-3 py-1.5">

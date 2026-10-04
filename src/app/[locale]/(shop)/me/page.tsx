@@ -42,7 +42,7 @@ export default async function MyBookingsPage({ params }: PageProps<"/[locale]/me
 
   return (
     <div className="space-y-7">
-      <h1 className="font-display text-3xl font-semibold">{dict.me.title}</h1>
+      <h1 className="font-display text-3xl font-medium">{dict.me.title}</h1>
 
       {all.length === 0 && (
         <div className="card">
@@ -66,7 +66,7 @@ export default async function MyBookingsPage({ params }: PageProps<"/[locale]/me
         <h2 className="eyebrow text-muted">{dict.me.account}</h2>
         <div className="card divide-y divide-line">
           <div className="flex items-center gap-3 px-4 py-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gold-soft font-display text-lg font-semibold text-gold-dark">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gold-soft font-display text-lg font-medium text-gold-dark">
               {customer.name.trim().charAt(0).toUpperCase()}
             </span>
             <div className="min-w-0">

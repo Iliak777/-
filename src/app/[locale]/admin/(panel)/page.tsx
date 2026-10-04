@@ -26,7 +26,7 @@ export default async function AppointmentsPage({ params, searchParams }: PagePro
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="font-display text-3xl font-semibold">{formatDate(localToUtc(date, 12 * 60), locale)}</h1>
+        <h1 className="font-display text-3xl font-medium">{formatDate(localToUtc(date, 12 * 60), locale)}</h1>
         <div className="flex gap-2">
           <Link className="btn-ghost px-3 py-1.5" href={`${base}?date=${addDays(date, -1)}`}>‹</Link>
           <Link className="btn-ghost px-3 py-1.5" href={base}>{dict.common.today}</Link>

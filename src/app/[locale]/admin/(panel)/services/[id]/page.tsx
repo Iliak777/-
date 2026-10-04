@@ -23,7 +23,7 @@ export default async function ServiceEditPage({ params }: PageProps<"/[locale]/a
 
   return (
     <form action={saveService} className="max-w-xl space-y-4">
-      <h1 className="font-display text-3xl font-semibold">{isNew ? t.new : t.edit}</h1>
+      <h1 className="font-display text-3xl font-medium">{isNew ? t.new : t.edit}</h1>
       <input type="hidden" name="locale" value={locale} />
       {svc && <input type="hidden" name="id" value={svc.id} />}
       {field("nameEn", t.nameEn, svc?.name.en, { required: true })}

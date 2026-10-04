@@ -86,7 +86,7 @@ function CancelBooking({ id, label }: { id: string; label: string }) {
         {dict.me.cancelBooking}
       </button>
       <Sheet open={open} onClose={() => setOpen(false)} title={dict.me.cancelBooking} locked={busy}>
-        <p className="font-display text-2xl leading-tight font-semibold">{dict.me.cancelConfirm}</p>
+        <p className="font-display text-2xl leading-tight font-medium">{dict.me.cancelConfirm}</p>
         <p className="mt-1 text-sm text-muted">{label}</p>
         {error && (
           <p role="alert" className="animate-pop mt-3 flex items-center gap-2 text-sm text-danger">

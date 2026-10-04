@@ -138,15 +138,19 @@ export function BookingFlow({ service, practitioners, customerName, initial, rep
       )}
 
       {/* The fastest path: one tap on the earliest free time. */}
-      <section className="overflow-hidden rounded-3xl bg-noir p-5 text-white shadow-sm">
-        <p className="eyebrow text-gold">{t.earliestTitle}</p>
+      <section className="silk relative isolate overflow-hidden rounded-[1.75rem] p-6 text-white">
+        <span aria-hidden className="halo -right-16 -bottom-24 w-60" />
+        <p className="eyebrow flex items-center gap-2 text-gold">
+          <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-gold" />
+          {t.earliestTitle}
+        </p>
         {earliest === null ? (
-          <p className="mt-2 text-sm text-white/80">{t.noSlotsAtAll}</p>
+          <p className="mt-3 text-sm text-white/80">{t.noSlotsAtAll}</p>
         ) : (
           <>
-            <p className="mt-2 text-2xl font-semibold">{whenLabel(earliest)}</p>
-            <p className="mt-0.5 text-sm text-white/70">{fmt(t.earliestWith, { staff: staffName(earliest.staffIds) })}</p>
-            <button className="btn-gold mt-4 w-full" onClick={() => choose(earliest)}>
+            <p className="mt-3 font-display text-[2rem] leading-tight font-medium tabular-nums">{whenLabel(earliest)}</p>
+            <p className="mt-1 text-sm text-white/65">{fmt(t.earliestWith, { staff: staffName(earliest.staffIds) })}</p>
+            <button className="btn-gold mt-5 w-full" onClick={() => choose(earliest)}>
               {t.bookEarliest}
             </button>
           </>
@@ -187,10 +191,10 @@ export function BookingFlow({ service, practitioners, customerName, initial, rep
                 key={d}
                 aria-pressed={d === date}
                 onClick={() => setDate(d)}
-                className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-2xl border border-line bg-paper transition active:scale-95 aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-paper"
+                className="flex h-[4.5rem] w-[3.75rem] shrink-0 flex-col items-center justify-center rounded-full border border-line bg-paper transition active:scale-95 aria-pressed:border-noir aria-pressed:bg-noir aria-pressed:text-gold"
               >
                 <span className="max-w-full truncate px-1 text-[0.65rem] opacity-70">{dayTop(d)}</span>
-                <span className="text-lg leading-tight font-semibold">{Number(d.slice(8))}</span>
+                <span className="font-display text-xl leading-tight font-medium">{Number(d.slice(8))}</span>
               </button>
             ))}
           </div>
@@ -224,7 +228,7 @@ export function BookingFlow({ service, practitioners, customerName, initial, rep
                     <button
                       key={s.start}
                       aria-pressed={selected?.start === s.start}
-                      className="h-11 rounded-xl border border-line bg-paper text-sm font-medium tabular-nums transition hover:border-gold active:scale-95 aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-paper"
+                      className={`h-11 rounded-full border bg-paper text-sm font-medium tabular-nums transition hover:border-gold active:scale-95 aria-pressed:border-noir aria-pressed:bg-noir aria-pressed:text-gold ${s.start === earliest?.start ? "border-gold text-gold-dark" : "border-line"}`}
                       onClick={() => choose(s)}
                     >
                       {formatTime(new Date(s.start), locale)}
@@ -240,7 +244,7 @@ export function BookingFlow({ service, practitioners, customerName, initial, rep
       <Sheet open={!!selected} onClose={() => setSelected(null)} title={replace ? t.changeTitle : t.confirmTitle} locked={busy}>
         {selected && (
           <div className="space-y-4">
-            <p className="font-display text-2xl leading-tight font-semibold">{service.name}</p>
+            <p className="font-display text-2xl leading-tight font-medium">{service.name}</p>
             <ul className="space-y-2.5 text-sm">
               <SummaryRow icon="calendar" text={whenLabel(selected)} strong />
               <SummaryRow icon="user" text={staffName(selected.staffIds)} />
@@ -285,7 +289,7 @@ function SummaryRow({ icon, text, strong = false }: { icon: IconName; text: stri
   if (!text) return null;
   return (
     <li className="flex items-center gap-3">
-      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold-soft text-gold-dark">
+      <span className="flex h-8 w-8 items-center justify-center rounded-full border border-gold/40 text-gold-dark">
         <Icon name={icon} className="h-4 w-4" />
       </span>
       <span className={strong ? "font-semibold" : ""}>{text}</span>

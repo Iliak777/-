@@ -10,7 +10,7 @@ export default async function ServicesAdminPage({ params }: PageProps<"/[locale]
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-3xl font-semibold">{dict.admin.nav.services}</h1>
+        <h1 className="font-display text-3xl font-medium">{dict.admin.nav.services}</h1>
         <Link href={`/${locale}/admin/services/new`} className="btn-primary py-2">+ {dict.admin.services.new}</Link>
       </div>
       <ul className="space-y-2">

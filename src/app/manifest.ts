@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "THE KLINIQUE",
-    short_name: "KLINIQUE",
+    short_name: "THE KLINIQUE",
     description: "Book treatments at THE KLINIQUE, Bangkok.",
     start_url: "/",
     display: "standalone",

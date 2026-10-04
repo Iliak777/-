@@ -46,7 +46,7 @@ function LanguageSwitcher() {
 export function Header() {
   const { locale } = useI18n();
   return (
-    <header className="sticky top-0 z-30 border-b border-line/70 bg-paper/90 pt-[env(safe-area-inset-top)] backdrop-blur-xl backdrop-saturate-150">
+    <header className="sticky top-0 z-30 border-b border-line/60 bg-cream/85 pt-[env(safe-area-inset-top)] backdrop-blur-xl backdrop-saturate-150">
       <div className="mx-auto flex h-[var(--header-h)] max-w-2xl items-center justify-between pr-2 pl-4">
         <Link href={`/${locale}`} aria-label="THE KLINIQUE" className="flex h-11 items-center">
           <Logo />
@@ -67,12 +67,12 @@ export function BackLink({ href, label }: { href: string; label: string }) {
   );
 }
 
-/** App-style tab bar, thumb-reachable on phones. */
+/** Floating tab bar: a black pill with the active tab in gold, thumb-reachable on phones. */
 export function BottomNav() {
   const { locale, dict } = useI18n();
   const pathname = usePathname();
   const tabs: { href: string; label: string; icon: IconName; active: boolean }[] = [
-    { href: `/${locale}`, label: dict.nav.treatments, icon: "sparkle", active: pathname === `/${locale}` || pathname.startsWith(`/${locale}/book`) },
+    { href: `/${locale}`, label: dict.nav.treatments, icon: "sparkle", active: pathname === `/${locale}` || pathname.startsWith(`/${locale}/book/`) },
     { href: `/${locale}/chat`, label: dict.nav.chat, icon: "chat", active: pathname.startsWith(`/${locale}/chat`) },
     {
       href: `/${locale}/me`,
@@ -82,17 +82,18 @@ export function BottomNav() {
     },
   ];
   return (
-    <nav aria-label={dict.nav.label} className="fixed inset-x-0 bottom-0 z-30 border-t border-line/70 bg-paper/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl backdrop-saturate-150">
-      <div className="mx-auto grid h-14 max-w-2xl grid-cols-3">
+    <nav aria-label={dict.nav.label} className="pointer-events-none fixed inset-x-0 bottom-0 z-30 px-4 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
+      <div className="pointer-events-auto mx-auto grid h-15 max-w-md grid-cols-3 rounded-full border border-white/10 bg-noir/92 px-1.5 shadow-[0_12px_32px_-12px_rgb(0_0_0/0.55)] backdrop-blur-xl">
         {tabs.map((t) => (
           <Link
             key={t.href}
             href={t.href}
             aria-current={t.active ? "page" : undefined}
-            className={`flex flex-col items-center justify-center gap-0.5 text-[0.68rem] font-medium transition active:scale-95 ${t.active ? "text-gold-dark" : "text-muted"}`}
+            className={`relative flex flex-col items-center justify-center gap-0.5 text-[0.66rem] font-medium tracking-wide transition active:scale-95 ${t.active ? "text-gold" : "text-white/55"}`}
           >
-            <Icon name={t.icon} className="h-6 w-6" strokeWidth={t.active ? 2 : 1.6} />
+            <Icon name={t.icon} className="h-[1.35rem] w-[1.35rem]" strokeWidth={t.active ? 1.9 : 1.5} />
             {t.label}
+            {t.active && <span aria-hidden className="absolute bottom-1 h-1 w-1 rounded-full bg-gold" />}
           </Link>
         ))}
       </div>

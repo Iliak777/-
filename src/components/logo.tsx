@@ -2,8 +2,8 @@
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <span className={`inline-flex flex-col items-start leading-none ${className}`}>
-      <span className="text-[0.55rem] tracking-[0.5em] text-gold">THE</span>
-      <span className="font-display text-xl font-semibold tracking-[0.22em]">KLINIQUE</span>
+      <span className="mb-1 text-[0.5rem] font-medium tracking-[0.6em] text-gold-dark">THE</span>
+      <span className="font-display text-[1.3rem] font-medium tracking-[0.2em]">KLINIQUE</span>
     </span>
   );
 }
